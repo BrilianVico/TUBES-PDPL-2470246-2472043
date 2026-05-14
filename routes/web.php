@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
-use App\Http\Controllers\SiswaAuthController;
+use App\Http\Controllers\OrtuAuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataSiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,42 +41,69 @@ Route::post('/logout', [AdminAuthController::class, 'logout'])
 
 /*
 |--------------------------------------------------------------------------
-| Siswa Authentication
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/login-siswa', [SiswaAuthController::class, 'showLoginForm'])
-    ->name('login.siswa');
-
-Route::post('/login-siswa', [SiswaAuthController::class, 'login'])
-    ->name('login.siswa.process');
-
-Route::post('/logout-siswa', [SiswaAuthController::class, 'logout'])
-    ->name('logout.siswa');
-
-/*
-|--------------------------------------------------------------------------
 | Orang Tua Authentication
 |--------------------------------------------------------------------------
 */
 
-Route::get('/login-ortu', function () {
-    return view('auth.login-ortu');
-})->name('login.ortu');
+Route::get('/login-ortu', [OrtuAuthController::class, 'showLoginForm'])
+    ->name('login.ortu');
 
-Route::post('/login-ortu', function () {
-    // Nanti bisa diganti dengan OrtuAuthController
-    return back()->with('error', 'Fitur login orang tua belum diimplementasikan.');
-})->name('login.ortu.process');
+Route::post('/login-ortu', [OrtuAuthController::class, 'login'])
+    ->name('login.ortu.process');
+
+Route::post('/logout-ortu', [OrtuAuthController::class, 'logout'])
+    ->name('logout.ortu');
 
 /*
 |--------------------------------------------------------------------------
-| Protected Routes
+| Cek Akun Orang Tua
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/ortu/cek-akun', [OrtuAuthController::class, 'showCekAkun'])
+    ->name('ortu.cek-akun');
+
+Route::post('/ortu/cek-akun', [OrtuAuthController::class, 'cekAkun'])
+    ->name('ortu.cek-akun.process');
+
+/*
+|--------------------------------------------------------------------------
+| Lupa Password Orang Tua
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/ortu/lupa-password', [OrtuAuthController::class, 'showForgotPassword'])
+    ->name('ortu.forgot-password');
+
+Route::post('/ortu/lupa-password', [OrtuAuthController::class, 'resetPassword'])
+    ->name('ortu.forgot-password.process');
+
+/*
+|--------------------------------------------------------------------------
+| Protected Routes - Admin
 |--------------------------------------------------------------------------
 */
 
 Route::middleware('admin.auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+
+    // Dashboard Admin
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+
+    // Data Master Siswa
+    Route::get('/admin/data-siswa', [DataSiswaController::class, 'index'])
+        ->name('admin.data-siswa');
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| Protected Routes - Orang Tua
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('ortu.auth')->group(function () {
+    Route::get('/dashboard-ortu', function () {
+        return view('dashboard_ortu');
+    })->name('dashboard.ortu');
 });

@@ -1,5 +1,4 @@
-{{-- resources/views/auth/login-ortu.blade.php --}}
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -176,6 +175,34 @@
             filter: brightness(1.05);
         }
 
+        .quick-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .quick-link {
+            display: block;
+            text-align: center;
+            padding: 12px 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: 0.3s;
+        }
+
+        .quick-link:hover {
+            background: rgba(16, 185, 129, 0.12);
+            border-color: rgba(16, 185, 129, 0.35);
+            color: #a7f3d0;
+            transform: translateY(-1px);
+        }
+
         .error-box {
             margin-bottom: 20px;
             padding: 12px 14px;
@@ -208,6 +235,16 @@
             font-size: 0.78rem;
             line-height: 1.8;
             color: rgba(255,255,255,0.55);
+        }
+
+        @media (max-width: 600px) {
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 30px 24px;
+            }
         }
     </style>
 </head>
@@ -244,13 +281,13 @@
             @csrf
 
             <div class="form-group">
-                <label class="form-label">Username</label>
+                <label class="form-label">Username (NIK)</label>
                 <input
                     type="text"
                     name="username"
                     class="form-control"
                     value="{{ old('username') }}"
-                    placeholder="Masukkan username"
+                    placeholder="Masukkan NIK Anda"
                     required
                     autofocus
                 >
@@ -289,6 +326,16 @@
                 👨‍👩‍👧 Login Orang Tua
             </button>
         </form>
+
+        <div class="quick-links">
+            <a href="{{ route('ortu.cek-akun') }}" class="quick-link">
+                🔍 Cek Akun
+            </a>
+
+            <a href="{{ route('ortu.forgot-password') }}" class="quick-link">
+                🔑 Lupa Password
+            </a>
+        </div>
 
         <div class="back-button">
             <a href="{{ route('login.menu') }}">← Kembali ke Pilihan Login</a>

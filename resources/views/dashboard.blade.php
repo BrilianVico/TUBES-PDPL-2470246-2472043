@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - SMP Sunodia</title>
+    <title>Dashboard Admin - SMP Sunodia</title>
 
     <style>
         * {
@@ -29,12 +29,14 @@
             background: linear-gradient(180deg, #0f172a, #1e293b);
             color: white;
             padding: 30px 20px;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar h2 {
             text-align: center;
             margin-bottom: 40px;
             font-size: 24px;
+            font-weight: 700;
         }
 
         .menu a {
@@ -45,25 +47,27 @@
             border-radius: 12px;
             margin-bottom: 10px;
             transition: 0.3s;
+            font-size: 15px;
         }
 
         .menu a:hover,
         .menu a.active {
-            background: rgba(255,255,255,0.12);
+            background: rgba(255, 255, 255, 0.12);
             color: #ffffff;
         }
 
-        /* Content */
+        /* Main Content */
         .content {
             margin-left: 260px;
             padding: 40px;
         }
 
+        /* Topbar */
         .topbar {
             background: white;
             padding: 20px 30px;
             border-radius: 18px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -72,6 +76,7 @@
 
         .topbar h1 {
             font-size: 28px;
+            font-weight: 700;
         }
 
         .logout-btn {
@@ -81,6 +86,12 @@
             padding: 10px 18px;
             border-radius: 10px;
             cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
         }
 
         /* Cards */
@@ -94,32 +105,45 @@
             background: white;
             border-radius: 18px;
             padding: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
         }
 
         .card h3 {
-            font-size: 16px;
+            font-size: 15px;
             color: #6b7280;
             margin-bottom: 10px;
         }
 
         .card .value {
-            font-size: 32px;
+            font-size: 34px;
             font-weight: bold;
             color: #111827;
         }
 
+        /* Welcome Box */
         .welcome-box {
             margin-top: 30px;
             background: linear-gradient(135deg, #1d4ed8, #2563eb);
             color: white;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.25);
         }
 
         .welcome-box h2 {
             margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .welcome-box p {
+            line-height: 1.7;
+            opacity: 0.95;
         }
 
         form {
@@ -131,15 +155,55 @@
 
 {{-- Sidebar --}}
 <div class="sidebar">
-    <h2>🏫 SMP Sunodia</h2>
+    <h2>SMP Sunodia</h2>
 
     <div class="menu">
-        <a href="#" class="active">🏠 Dashboard</a>
-        <a href="#">👨‍🎓 Data Siswa</a>
-        <a href="#">💰 Tagihan</a>
-        <a href="#">💳 Pembayaran</a>
-        <a href="#">🎓 Beasiswa</a>
-        <a href="#">📢 Pengumuman</a>
+        <a href="{{ route('dashboard') }}"
+           class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            Dashboard
+        </a>
+
+        <a href="{{ route('admin.data-siswa') }}"
+           class="{{ request()->routeIs('admin.data-siswa') ? 'active' : '' }}">
+            Data Siswa
+        </a>
+
+        <a href="#">
+            Tagihan
+        </a>
+
+        <a href="#">
+            Pembayaran
+        </a>
+
+        <a href="#">
+            Beasiswa
+        </a>
+
+        <a href="#">
+            Pengumuman
+        </a>
+
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit"
+                    style="
+                        width: 100%;
+                        background: transparent;
+                        border: none;
+                        color: #fca5a5;
+                        text-align: left;
+                        padding: 14px 18px;
+                        border-radius: 12px;
+                        cursor: pointer;
+                        font-size: 15px;
+                        transition: 0.3s;
+                    "
+                    onmouseover="this.style.background='rgba(255,255,255,0.12)'"
+                    onmouseout="this.style.background='transparent'">
+                Logout
+            </button>
+        </form>
     </div>
 </div>
 
@@ -152,7 +216,7 @@
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button class="logout-btn">Logout</button>
+            <button type="submit" class="logout-btn">Logout</button>
         </form>
     </div>
 
@@ -160,22 +224,22 @@
     <div class="cards">
         <div class="card">
             <h3>Total Siswa</h3>
-            <div class="value">350</div>
+            <div class="value">{{ $totalSiswa }}</div>
         </div>
 
         <div class="card">
             <h3>Total Tagihan</h3>
-            <div class="value">125</div>
+            <div class="value">{{ $totalTagihan }}</div>
         </div>
 
         <div class="card">
             <h3>Pembayaran Hari Ini</h3>
-            <div class="value">18</div>
+            <div class="value">{{ $pembayaranHariIni }}</div>
         </div>
 
         <div class="card">
             <h3>Pengajuan Beasiswa</h3>
-            <div class="value">12</div>
+            <div class="value">{{ $pengajuanBeasiswa }}</div>
         </div>
     </div>
 
