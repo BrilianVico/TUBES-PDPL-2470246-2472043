@@ -175,9 +175,15 @@
             Data Siswa
         </a>
 
-        <a href="#">Tagihan</a>
+        <a href="{{ route('admin.tagihan.index') }}"
+           class="{{ request()->routeIs('admin.tagihan.*') ? 'active' : '' }}">
+            Tagihan
+        </a>
         <a href="#">Pembayaran</a>
-        <a href="#">Beasiswa</a>
+        <a href="{{ route('admin.beasiswa.index') }}"
+           class="{{ request()->routeIs('admin.beasiswa.*') ? 'active' : '' }}">
+            Beasiswa
+        </a>
         <a href="#">Pengumuman</a>
 
         <form method="POST" action="{{ route('logout') }}">

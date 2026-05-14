@@ -5,6 +5,8 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\OrtuAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataSiswaController;
+use App\Http\Controllers\TagihanController;
+use App\Http\Controllers\BeasiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,14 +88,37 @@ Route::post('/ortu/lupa-password', [OrtuAuthController::class, 'resetPassword'])
 
 Route::middleware('admin.auth')->group(function () {
 
-    // Dashboard Admin
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard Admin
+    |--------------------------------------------------------------------------
+    */
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    // Data Master Siswa
+    /*
+    |--------------------------------------------------------------------------
+    | Data Master Siswa
+    |--------------------------------------------------------------------------
+    */
     Route::get('/admin/data-siswa', [DataSiswaController::class, 'index'])
         ->name('admin.data-siswa');
 
+    /*
+    |--------------------------------------------------------------------------
+    | CRUD Tagihan
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('admin/tagihan', TagihanController::class)
+        ->names('admin.tagihan');
+
+    /*
+    |--------------------------------------------------------------------------
+    | CRUD Beasiswa
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('admin/beasiswa', BeasiswaController::class)
+        ->names('admin.beasiswa');
 });
 
 /*
