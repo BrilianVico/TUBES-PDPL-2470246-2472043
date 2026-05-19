@@ -224,12 +224,19 @@
         <a href="{{ route('dashboard') }}">Dashboard</a>
         <a href="{{ route('admin.data-siswa') }}">Data Siswa</a>
         <a href="{{ route('admin.tagihan.index') }}" class="active">Tagihan</a>
-        <a href="#">Pembayaran</a>
+        <a href="{{ route('admin.pembayaran.index') }}"
+           class="{{ request()->routeIs('admin.pembayaran.*') ? 'active' : '' }}">
+            Pembayaran
+        </a>
         <a href="{{ route('admin.beasiswa.index') }}"
            class="{{ request()->routeIs('admin.beasiswa.*') ? 'active' : '' }}">
             Beasiswa
         </a>
-        <a href="#">Pengumuman</a>
+        <a href="{{ route('admin.pengumuman.index') }}"
+           class="{{ request()->routeIs('admin.pengumuman.*') ? 'active' : '' }}">
+            Pengumuman
+        </a>
+
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf

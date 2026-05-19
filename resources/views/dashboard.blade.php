@@ -173,7 +173,8 @@
             Tagihan
         </a>
 
-        <a href="#">
+        <a href="{{ route('admin.pembayaran.index') }}"
+           class="{{ request()->routeIs('admin.pembayaran.*') ? 'active' : '' }}">
             Pembayaran
         </a>
 
@@ -182,7 +183,8 @@
             Beasiswa
         </a>
 
-        <a href="#">
+        <a href="{{ route('admin.pengumuman.index') }}"
+           class="{{ request()->routeIs('admin.pengumuman.*') ? 'active' : '' }}">
             Pengumuman
         </a>
 

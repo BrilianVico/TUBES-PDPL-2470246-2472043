@@ -7,6 +7,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataSiswaController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\BeasiswaController;
+use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\PembayaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,37 +90,37 @@ Route::post('/ortu/lupa-password', [OrtuAuthController::class, 'resetPassword'])
 
 Route::middleware('admin.auth')->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Dashboard Admin
-    |--------------------------------------------------------------------------
-    */
+    // Dashboard Admin
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Data Master Siswa
-    |--------------------------------------------------------------------------
-    */
+    // Data Master Siswa
     Route::get('/admin/data-siswa', [DataSiswaController::class, 'index'])
         ->name('admin.data-siswa');
 
-    /*
-    |--------------------------------------------------------------------------
-    | CRUD Tagihan
-    |--------------------------------------------------------------------------
-    */
+    // CRUD Tagihan
     Route::resource('admin/tagihan', TagihanController::class)
         ->names('admin.tagihan');
 
-    /*
-    |--------------------------------------------------------------------------
-    | CRUD Beasiswa
-    |--------------------------------------------------------------------------
-    */
+    // CRUD Beasiswa
     Route::resource('admin/beasiswa', BeasiswaController::class)
         ->names('admin.beasiswa');
+
+    // CRUD Pengumuman
+    Route::resource('admin/pengumuman', PengumumanController::class)
+        ->names('admin.pengumuman');
+
+    // Data Pembayaran
+    Route::get('/admin/pembayaran', [PembayaranController::class, 'index'])
+        ->name('admin.pembayaran.index');
+
+    // Approve pembayaran
+    Route::post('/admin/pembayaran/{id}/approve', [PembayaranController::class, 'approve'])
+        ->name('admin.pembayaran.approve');
+
+    // Reject pembayaran
+    Route::post('/admin/pembayaran/{id}/reject', [PembayaranController::class, 'reject'])
+        ->name('admin.pembayaran.reject');
 });
 
 /*
@@ -128,6 +130,7 @@ Route::middleware('admin.auth')->group(function () {
 */
 
 Route::middleware('ortu.auth')->group(function () {
+
     Route::get('/dashboard-ortu', function () {
         return view('dashboard_ortu');
     })->name('dashboard.ortu');

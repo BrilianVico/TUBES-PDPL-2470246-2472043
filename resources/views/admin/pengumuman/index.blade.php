@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Beasiswa - SMP Sunodia</title>
+    <title>Data Pengumuman - SMP Sunodia</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -15,6 +15,7 @@
             color: #0f172a;
         }
 
+        /* Sidebar */
         .sidebar {
             position: fixed;
             top: 0;
@@ -58,6 +59,7 @@
             color: #ffffff;
         }
 
+        /* Content */
         .content {
             margin-left: 260px;
             padding: 40px;
@@ -134,6 +136,16 @@
             border: none;
             border-radius: 14px;
         }
+
+        .judul {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .isi-preview {
+            color: #64748b;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -149,7 +161,7 @@
            class="{{ request()->routeIs('admin.pembayaran.*') ? 'active' : '' }}">
             Pembayaran
         </a>
-        <a href="{{ route('admin.beasiswa.index') }}" class="active">Beasiswa</a>
+        <a href="{{ route('admin.beasiswa.index') }}">Beasiswa</a>
         <a href="{{ route('admin.pengumuman.index') }}"
            class="{{ request()->routeIs('admin.pengumuman.*') ? 'active' : '' }}">
             Pengumuman
@@ -166,8 +178,8 @@
 <div class="content">
 
     <div class="topbar">
-        <h1>Data Beasiswa</h1>
-        <p>Kelola program beasiswa untuk siswa SMP Sunodia.</p>
+        <h1>Data Pengumuman</h1>
+        <p>Kelola pengumuman yang akan tampil pada akun orang tua.</p>
     </div>
 
     @if(session('success'))
@@ -179,11 +191,11 @@
     <div class="card-box">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="mb-0 fw-bold">Daftar Program Beasiswa</h5>
+            <h5 class="mb-0 fw-bold">Daftar Pengumuman</h5>
 
-            <a href="{{ route('admin.beasiswa.create') }}"
+            <a href="{{ route('admin.pengumuman.create') }}"
                class="btn btn-primary-custom">
-                + Tambah Beasiswa
+                + Tambah Pengumuman
             </a>
         </div>
 
@@ -192,42 +204,58 @@
                 <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama Beasiswa</th>
-                    <th>Nominal Potongan</th>
-                    <th>Kuota</th>
+                    <th>Judul</th>
+                    <th>Periode</th>
+                    <th>Target</th>
                     <th>Status</th>
                     <th width="180">Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($beasiswa as $item)
+                @forelse($pengumuman as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+
                         <td>
-                            <div class="fw-semibold">{{ $item->nama_beasiswa }}</div>
+                            <div class="judul">{{ $item->judul }}</div>
+                            <div class="isi-preview">
+                                {{ \Illuminate\Support\Str::limit(strip_tags($item->isi), 80) }}
+                            </div>
+                        </td>
+
+                        <td>
+                            {{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') }}
+                            <br>
                             <small class="text-muted">
-                                {{ $item->deskripsi }}
+                                s/d
+                                {{ $item->tanggal_selesai
+                                    ? \Carbon\Carbon::parse($item->tanggal_selesai)->format('d M Y')
+                                    : '-' }}
                             </small>
                         </td>
+
+                        <td>{{ $item->target }}</td>
+
                         <td>
-                            Rp {{ number_format($item->nominal_potongan, 0, ',', '.') }}
-                        </td>
-                        <td>{{ $item->kuota }}</td>
-                        <td>
-                            <span class="badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-secondary' }}">
+                            <span class="badge
+                                @if($item->status == 'Aktif') bg-success
+                                @elseif($item->status == 'Draft') bg-warning text-dark
+                                @else bg-secondary
+                                @endif">
                                 {{ $item->status }}
                             </span>
                         </td>
+
                         <td>
-                            <a href="{{ route('admin.beasiswa.edit', $item->id_beasiswa) }}"
+                            <a href="{{ route('admin.pengumuman.edit', $item->id_pengumuman) }}"
                                class="btn btn-warning btn-sm">
                                 Edit
                             </a>
 
-                            <form action="{{ route('admin.beasiswa.destroy', $item->id_beasiswa) }}"
+                            <form action="{{ route('admin.pengumuman.destroy', $item->id_pengumuman) }}"
                                   method="POST"
                                   class="d-inline"
-                                  onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                  onsubmit="return confirm('Yakin ingin menghapus pengumuman ini?')">
                                 @csrf
                                 @method('DELETE')
 
@@ -242,7 +270,7 @@
                     <tr>
                         <td colspan="6"
                             class="text-center text-muted py-4">
-                            Belum ada data beasiswa.
+                            Belum ada pengumuman.
                         </td>
                     </tr>
                 @endforelse
