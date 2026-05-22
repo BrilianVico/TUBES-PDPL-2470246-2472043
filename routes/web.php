@@ -9,6 +9,7 @@ use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\BeasiswaController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\DashboardOrtuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,7 +73,7 @@ Route::post('/ortu/cek-akun', [OrtuAuthController::class, 'cekAkun'])
 
 /*
 |--------------------------------------------------------------------------
-| Lupa Password Orang Tua
+| Lupa Password Orang Tua (sebelum login)
 |--------------------------------------------------------------------------
 */
 
@@ -131,7 +132,26 @@ Route::middleware('admin.auth')->group(function () {
 
 Route::middleware('ortu.auth')->group(function () {
 
-    Route::get('/dashboard-ortu', function () {
-        return view('dashboard_ortu');
-    })->name('dashboard.ortu');
+    // Dashboard Orang Tua
+    Route::get('/dashboard-ortu', [DashboardOrtuController::class, 'index'])
+        ->name('dashboard.ortu');
+
+    // Ubah Password
+    Route::get('/ortu/ubah-password', [OrtuAuthController::class, 'showChangePassword'])
+        ->name('ortu.change-password');
+
+    Route::post('/ortu/ubah-password', [OrtuAuthController::class, 'changePassword'])
+        ->name('ortu.change-password.process');
+
+    // Bayar Tagihan
+    Route::get('/ortu/tagihan', [OrtuTagihanController::class, 'index'])
+        ->name('ortu.tagihan.index');
+
+    // Form Upload Bukti Transfer
+    Route::get('/ortu/tagihan/{id}/bayar', [OrtuTagihanController::class, 'showBayarForm'])
+        ->name('ortu.tagihan.bayar');
+
+    // Submit Pembayaran
+    Route::post('/ortu/tagihan/{id}/bayar', [OrtuTagihanController::class, 'submitPembayaran'])
+        ->name('ortu.tagihan.submit');
 });

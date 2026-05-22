@@ -26,7 +26,6 @@ class OrtuAuthController extends Controller
             'password' => 'required',
         ]);
 
-        // Cari data wali berdasarkan username (NIK)
         $wali = DB::table('wali_murid')
             ->where('username', $request->username)
             ->first();
@@ -37,14 +36,12 @@ class OrtuAuthController extends Controller
                 ->with('error', 'Username tidak ditemukan.');
         }
 
-        // Cek password hash
         if (!Hash::check($request->password, $wali->password_hash)) {
             return back()
                 ->withInput()
                 ->with('error', 'Password salah.');
         }
 
-        // Simpan session login
         session([
             'ortu_logged_in' => true,
             'id_walimurid'   => $wali->id_walimurid,
@@ -92,7 +89,10 @@ class OrtuAuthController extends Controller
             ->join('siswa as s', 'w.id_walimurid', '=', 's.id_walimurid')
             ->where('w.nama', $request->nama_wali)
             ->where('s.nama', $request->nama_anak)
-            ->select('w.username as nik', 's.nis')
+            ->select(
+                'w.username as nik',
+                's.nis'
+            )
             ->orderBy('s.nis')
             ->first();
 
@@ -121,7 +121,7 @@ class OrtuAuthController extends Controller
     public function resetPassword(Request $request)
     {
         $request->validate([
-            'nik' => 'required',
+            'nik'       => 'required',
             'nama_anak' => 'required',
         ]);
 
@@ -129,7 +129,10 @@ class OrtuAuthController extends Controller
             ->join('siswa as s', 'w.id_walimurid', '=', 's.id_walimurid')
             ->where('w.username', $request->nik)
             ->where('s.nama', $request->nama_anak)
-            ->select('w.id_walimurid', 's.nis')
+            ->select(
+                'w.id_walimurid',
+                's.nis'
+            )
             ->orderBy('s.nis')
             ->first();
 
@@ -139,7 +142,6 @@ class OrtuAuthController extends Controller
                 ->withInput();
         }
 
-        // Update password menjadi NIS anak
         DB::table('wali_murid')
             ->where('id_walimurid', $data->id_walimurid)
             ->update([
@@ -150,5 +152,56 @@ class OrtuAuthController extends Controller
             'success',
             'Verifikasi berhasil! Password Anda telah di-reset menjadi NIS anak Anda (' . $data->nis . ').'
         );
+    }
+
+    /**
+     * Menampilkan halaman ubah password
+     */
+    public function showChangePassword()
+    {
+        return view('ortu.change-password');
+    }
+
+    /**
+     * Proses ubah password
+     */
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'password_lama' => 'required',
+            'password_baru' => 'required|min:6',
+            'konfirmasi'    => 'required|same:password_baru',
+        ], [
+            'konfirmasi.same'   => 'Konfirmasi password baru tidak cocok.',
+            'password_baru.min' => 'Password baru minimal 6 karakter.',
+        ]);
+
+        $idWali = session('id_walimurid');
+
+        $wali = DB::table('wali_murid')
+            ->where('id_walimurid', $idWali)
+            ->first();
+
+        if (!$wali) {
+            return back()->withErrors([
+                'password_lama' => 'Data wali murid tidak ditemukan.'
+            ]);
+        }
+
+        if (!Hash::check($request->password_lama, $wali->password_hash)) {
+            return back()->withErrors([
+                'password_lama' => 'Password saat ini tidak sesuai.'
+            ]);
+        }
+
+        DB::table('wali_murid')
+            ->where('id_walimurid', $idWali)
+            ->update([
+                'password_hash' => Hash::make($request->password_baru),
+            ]);
+
+        return redirect()
+            ->route('ortu.change-password')
+            ->with('success', 'Password berhasil diperbarui.');
     }
 }

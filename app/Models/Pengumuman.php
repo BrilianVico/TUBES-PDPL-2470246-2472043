@@ -7,19 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Pengumuman extends Model
 {
     /**
-     * Nama tabel di database
+     * Nama tabel
      */
     protected $table = 'pengumuman';
 
     /**
-     * Primary key tabel
+     * Primary key
      */
     protected $primaryKey = 'id_pengumuman';
-
-    /**
-     * Primary key bukan auto increment integer default Laravel
-     */
-    protected $keyType = 'int';
 
     /**
      * Gunakan created_at dan updated_at
@@ -27,7 +22,7 @@ class Pengumuman extends Model
     public $timestamps = true;
 
     /**
-     * Field yang boleh diisi mass assignment
+     * Field yang boleh diisi
      */
     protected $fillable = [
         'judul',
@@ -47,15 +42,7 @@ class Pengumuman extends Model
     ];
 
     /**
-     * Scope: hanya pengumuman aktif
-     */
-    public function scopeAktif($query)
-    {
-        return $query->where('status', 'Aktif');
-    }
-
-    /**
-     * Scope: pengumuman yang sedang tayang
+     * Scope pengumuman aktif dan sedang tayang
      */
     public function scopeSedangTayang($query)
     {
@@ -66,27 +53,5 @@ class Pengumuman extends Model
                 $q->whereNull('tanggal_selesai')
                     ->orWhereDate('tanggal_selesai', '>=', now());
             });
-    }
-
-    /**
-     * Accessor: cek apakah pengumuman sedang aktif tayang
-     */
-    public function getIsAktifAttribute()
-    {
-        if ($this->status !== 'Aktif') {
-            return false;
-        }
-
-        $today = now()->toDateString();
-
-        if ($this->tanggal_mulai > $today) {
-            return false;
-        }
-
-        if ($this->tanggal_selesai && $this->tanggal_selesai < $today) {
-            return false;
-        }
-
-        return true;
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password - SMP Sunodia</title>
+    <title>Cek Informasi Akun - SMP Sunodia</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
             align-items: center;
             padding: 30px;
             background: url('{{ asset('IMG/GambarSekolah.png') }}') center center / cover no-repeat fixed;
-            color: #fff;
+            color: #ffffff;
             position: relative;
         }
 
@@ -31,8 +31,12 @@
             content: '';
             position: fixed;
             inset: 0;
-            background: rgba(2, 6, 23, 0.72);
+            background:
+                radial-gradient(circle at top right, rgba(16, 185, 129, 0.18), transparent 35%),
+                radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.12), transparent 35%),
+                rgba(2, 6, 23, 0.72);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: -1;
         }
 
@@ -40,34 +44,42 @@
             width: 100%;
             max-width: 520px;
             padding: 40px;
-            border-radius: 28px;
+            border-radius: 30px;
             background: rgba(15, 23, 42, 0.82);
             border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+            box-shadow:
+                0 30px 80px rgba(0,0,0,0.45),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
 
         .badge {
             display: inline-block;
             padding: 8px 18px;
             border-radius: 999px;
-            background: rgba(245, 158, 11, 0.12);
-            border: 1px solid rgba(245, 158, 11, 0.35);
-            color: #fde68a;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #a7f3d0;
             font-size: 0.8rem;
             font-weight: 600;
             margin-bottom: 18px;
         }
 
         h1 {
-            font-size: 1.9rem;
+            font-size: 2rem;
             font-weight: 800;
             margin-bottom: 10px;
+            background: linear-gradient(90deg, #ffffff, #d1fae5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .description {
-            color: rgba(255,255,255,0.75);
+            font-size: 0.95rem;
             line-height: 1.8;
-            margin-bottom: 24px;
+            color: rgba(255,255,255,0.78);
+            margin-bottom: 28px;
         }
 
         .alert {
@@ -80,83 +92,123 @@
 
         .alert-danger {
             background: rgba(239, 68, 68, 0.15);
-            color: #fecaca;
             border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fecaca;
         }
 
-        .alert-success {
-            background: rgba(16, 185, 129, 0.15);
-            color: #a7f3d0;
+        .result-box {
+            padding: 18px;
+            border-radius: 16px;
+            background: rgba(16, 185, 129, 0.12);
             border: 1px solid rgba(16, 185, 129, 0.35);
+            margin-bottom: 22px;
+        }
+
+        .result-box h3 {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            color: #a7f3d0;
+        }
+
+        .result-item {
+            margin-bottom: 8px;
+            font-size: 0.92rem;
+        }
+
+        .result-item strong {
+            color: #ffffff;
+        }
+
+        .info-text {
+            margin-top: 14px;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.72);
         }
 
         .form-group {
             margin-bottom: 18px;
         }
 
-        label {
+        .form-label {
             display: block;
             margin-bottom: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.9);
         }
 
-        input {
+        .form-control {
             width: 100%;
             padding: 14px 16px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.10);
             background: rgba(255,255,255,0.06);
-            color: white;
+            color: #ffffff;
+            font-size: 0.95rem;
             outline: none;
+            transition: 0.3s;
         }
 
-        input::placeholder {
+        .form-control::placeholder {
             color: rgba(255,255,255,0.45);
         }
 
-        .btn {
+        .form-control:focus {
+            border-color: #34d399;
+            box-shadow: 0 0 0 3px rgba(52,211,153,0.15);
+        }
+
+        .btn-submit {
             width: 100%;
             padding: 14px;
             border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 14px;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 8px;
-            box-shadow: 0 12px 24px rgba(245, 158, 11, 0.25);
+            transition: 0.3s;
+            box-shadow: 0 12px 24px rgba(16,185,129,0.25);
         }
 
-        .btn:hover {
+        .btn-submit:hover {
+            transform: translateY(-2px);
             filter: brightness(1.05);
-            transform: translateY(-1px);
         }
 
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 20px;
-            color: rgba(255,255,255,0.7);
+            margin-top: 24px;
+            color: rgba(255,255,255,0.75);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
+            font-weight: 500;
         }
 
         .back-link:hover {
-            color: white;
+            color: #ffffff;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 30px 24px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <div class="badge">Lupa Password</div>
 
-    <h1>Reset Password Orang Tua</h1>
+    <div class="badge">Cek Akun</div>
+
+    <h1>Informasi Akun Orang Tua</h1>
 
     <p class="description">
-        Masukkan NIK dan nama lengkap anak untuk mereset password.
-        Password akan diubah menjadi <strong>NIS anak</strong>.
+        Masukkan nama lengkap wali dan nama lengkap anak untuk melihat username yang terdaftar di sistem.
     </p>
 
     @if(session('error'))
@@ -165,45 +217,65 @@
         </div>
     @endif
 
-    @if(session('success'))
-        <div class="alert alert-success">
-            {!! session('success') !!}
+    @if(session('data_akun'))
+        <div class="result-box">
+            <h3>Informasi Akun</h3>
+
+            <div class="result-item">
+                <strong>Username (NIK):</strong>
+                {{ session('data_akun')->nik }}
+            </div>
+
+            <div class="result-item">
+                <strong>NIS Anak:</strong>
+                {{ session('data_akun')->nis }}
+            </div>
+
+            <div class="info-text">
+                Jika Anda belum pernah mengganti password, gunakan NIS anak pertama sebagai password login.
+                Jika sudah pernah mengganti password, gunakan password terbaru Anda atau gunakan menu Lupa Password.
+            </div>
         </div>
     @endif
 
-    <form method="POST" action="{{ route('ortu.forgot-password.process') }}">
+    <form method="POST" action="{{ route('ortu.cek-akun.process') }}">
         @csrf
 
         <div class="form-group">
-            <label>NIK / Username</label>
+            <label class="form-label">Nama Lengkap Wali</label>
+
             <input
                 type="text"
-                name="nik"
-                value="{{ old('nik') }}"
-                placeholder="Masukkan NIK Anda"
+                name="nama_wali"
+                class="form-control"
+                value="{{ old('nama_wali') }}"
+                placeholder="Masukkan nama lengkap wali"
                 required
             >
         </div>
 
         <div class="form-group">
-            <label>Nama Lengkap Anak</label>
+            <label class="form-label">Nama Lengkap Anak</label>
+
             <input
                 type="text"
                 name="nama_anak"
+                class="form-control"
                 value="{{ old('nama_anak') }}"
                 placeholder="Masukkan nama lengkap anak"
                 required
             >
         </div>
 
-        <button type="submit" class="btn">
-            🔑 Verifikasi & Reset Password
+        <button type="submit" class="btn-submit">
+            Tampilkan Informasi Akun
         </button>
     </form>
 
     <a href="{{ route('login.ortu') }}" class="back-link">
-        ← Kembali ke Login Orang Tua
+        Kembali ke Login Orang Tua
     </a>
+
 </div>
 
 </body>

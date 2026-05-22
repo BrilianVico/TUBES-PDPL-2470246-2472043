@@ -283,11 +283,22 @@
 
 
         <nav class="menu">
-            <a href="{{ route('dashboard.ortu') }}" class="active">🏠 Dashboard</a>
-            <a href="#">💳 Bayar Tagihan</a>
-            <a href="#">📄 Riwayat Pembayaran</a>
-            <a href="{{ route('ortu.cek-akun') }}">🔍 Cek Akun</a>
-            <a href="{{ route('ortu.forgot-password') }}">🔑 Lupa Password</a>
+            <a href="{{ route('dashboard.ortu') }}" class="active">
+                Dashboard
+            </a>
+
+            <a href="#">
+                Bayar Tagihan
+            </a>
+
+            <a href="#">
+                Riwayat Pembayaran
+            </a>
+
+            <a href="{{ route('ortu.change-password') }}"
+               class="{{ request()->routeIs('ortu.change-password') ? 'active' : '' }}">
+                Ubah Password
+            </a>
         </nav>
 
         <form method="POST" action="{{ route('logout.ortu') }}">
@@ -314,6 +325,7 @@
             </div>
         </div>
 
+        {{-- Statistik --}}
         <section class="stats">
             <div class="card">
                 <div class="stat-label">Jumlah Anak</div>
@@ -321,17 +333,16 @@
             </div>
 
             <div class="card">
-                <div class="stat-label">Tagihan Aktif</div>
-                <div class="stat-value" style="color: #ef4444;">3</div>
-            </div>
-
-            <div class="card">
-                <div class="stat-label">Total Sisa Bayar</div>
-                <div class="stat-value" style="font-size: 22px; color: #2563eb;">Rp 1.250.000</div>
+                <div class="stat-label">Pengumuman Aktif</div>
+                <div class="stat-value" style="color: #176d4c;">
+                    {{ $pengumuman->count() }}
+                </div>
             </div>
         </section>
 
+        {{-- Konten Utama --}}
         <section class="content-grid">
+            {{-- Data Anak --}}
             <div class="card">
                 <h3 class="section-title">👨‍🎓 Data Anak</h3>
 
@@ -346,33 +357,27 @@
                 </div>
             </div>
 
+            {{-- Pengumuman --}}
             <div class="card">
-                <h3 class="section-title">💳 Tagihan Aktif</h3>
+                <h3 class="section-title">📢 Pengumuman Sekolah</h3>
 
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Siswa</th>
-                        <th>Jenis</th>
-                        <th>Nominal</th>
-                        <th>Aksi</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Brilian Viconaftali</td>
-                        <td>SPP Mei</td>
-                        <td>Rp 500.000</td>
-                        <td><a href="#" class="btn">Bayar</a></td>
-                    </tr>
-                    <tr>
-                        <td>Maria Sunodia</td>
-                        <td>Seragam</td>
-                        <td>Rp 750.000</td>
-                        <td><a href="#" class="btn">Bayar</a></td>
-                    </tr>
-                    </tbody>
-                </table>
+                @forelse($pengumuman as $item)
+                    <div class="child-item">
+                        <h4>{{ $item->judul }}</h4>
+
+                        <p style="margin-top: 6px;">
+                            {{ $item->isi }}
+                        </p>
+
+                        <p style="font-size: 12px; margin-top: 8px; color: #94a3b8;">
+                            {{ \Carbon\Carbon::parse($item->tanggal_mulai)->translatedFormat('d F Y') }}
+                        </p>
+                    </div>
+                @empty
+                    <p style="color: #64748b;">
+                        Belum ada pengumuman.
+                    </p>
+                @endforelse
             </div>
         </section>
     </main>

@@ -312,7 +312,7 @@
                         class="toggle-password"
                         onclick="togglePassword()"
                     >
-                        👁️
+                        👁
                     </button>
                 </div>
             </div>
@@ -323,17 +323,17 @@
             </div>
 
             <button type="submit" class="btn-login">
-                👨‍👩‍👧 Login Orang Tua
+                Login Orang Tua
             </button>
         </form>
 
         <div class="quick-links">
             <a href="{{ route('ortu.cek-akun') }}" class="quick-link">
-                🔍 Cek Akun
+                Cek Akun
             </a>
 
             <a href="{{ route('ortu.forgot-password') }}" class="quick-link">
-                🔑 Lupa Password
+                Lupa Password
             </a>
         </div>
 
@@ -355,10 +355,9 @@
 
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
-            toggleButton.textContent = '🙈';
+
         } else {
             passwordInput.type = 'password';
-            toggleButton.textContent = '👁️';
         }
     }
 </script>
