@@ -140,6 +140,9 @@
         <a href="{{ route('admin.pembayaran.index') }}" class="active">Pembayaran</a>
         <a href="{{ route('admin.beasiswa.index') }}">Beasiswa</a>
         <a href="{{ route('admin.pengumuman.index') }}">Pengumuman</a>
+        <a href="{{ route('admin.pengajuan.index') }}">
+            Pengajuan Beasiswa
+        </a>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf

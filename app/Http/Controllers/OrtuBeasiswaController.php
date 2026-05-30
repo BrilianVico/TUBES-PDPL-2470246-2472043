@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Beasiswa;
+use App\Models\PengajuanBeasiswa;
+
+class OrtuBeasiswaController extends Controller
+{
+    public function create()
+    {
+        $siswa = DB::table('siswa')
+            ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id_kelas')
+            ->where('siswa.id_walimurid', session('id_walimurid'))
+            ->select(
+                'siswa.id_siswa',
+                'siswa.nis',
+                'siswa.nama',
+                'kelas.nama_kelas as kelas'
+            )
+            ->get();
+
+        $beasiswa = Beasiswa::where('status', 'Aktif')->get();
+
+        return view(
+            'ortu.pengajuan-beasiswa',
+            compact('siswa', 'beasiswa')
+        );
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'id_beasiswa' => 'required',
+
+            'nis' => 'required',
+            'nama' => 'required',
+            'kelas' => 'required',
+
+            'nilai_bindo' => 'required|numeric',
+            'nilai_bing' => 'required|numeric',
+            'nilai_mtk' => 'required|numeric',
+            'nilai_pkn' => 'required|numeric',
+            'nilai_ipa' => 'required|numeric',
+            'nilai_ips' => 'required|numeric',
+        ]);
+
+        $rata = (
+                $request->nilai_bindo +
+                $request->nilai_bing +
+                $request->nilai_mtk +
+                $request->nilai_pkn +
+                $request->nilai_ipa +
+                $request->nilai_ips
+            ) / 6;
+
+        PengajuanBeasiswa::create([
+            'id_beasiswa' => $request->id_beasiswa,
+            'id_siswa' => $request->id_siswa,
+
+            'id_walimurid' => session('id_walimurid'),
+
+            'nis' => $request->nis,
+            'nama' => $request->nama,
+            'kelas' => $request->kelas,
+
+            'nilai_bindo' => $request->nilai_bindo,
+            'nilai_bing' => $request->nilai_bing,
+            'nilai_mtk' => $request->nilai_mtk,
+            'nilai_pkn' => $request->nilai_pkn,
+            'nilai_ipa' => $request->nilai_ipa,
+            'nilai_ips' => $request->nilai_ips,
+
+            'rata_rata' => $rata,
+            'status' => 'Menunggu'
+        ]);
+
+        return redirect()
+            ->route('ortu.beasiswa.create')
+            ->with('success', 'Pengajuan beasiswa berhasil dikirim.');
+    }
+}

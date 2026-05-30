@@ -283,11 +283,11 @@
 
 
         <nav class="menu">
-            <a href="{{ route('dashboard.ortu') }}" class="active">
+            <a href="{{ route('dashboard.ortu') }}">
                 Dashboard
             </a>
 
-            <a href="#">
+            <a href="{{ route('ortu.tagihan.index') }}">
                 Bayar Tagihan
             </a>
 
@@ -295,15 +295,18 @@
                 Riwayat Pembayaran
             </a>
 
-            <a href="{{ route('ortu.change-password') }}"
-               class="{{ request()->routeIs('ortu.change-password') ? 'active' : '' }}">
+            <a href="{{ route('ortu.beasiswa.create') }}">
+                Daftar Beasiswa
+            </a>
+
+            <a href="{{ route('ortu.change-password') }}">
                 Ubah Password
             </a>
         </nav>
 
         <form method="POST" action="{{ route('logout.ortu') }}">
             @csrf
-            <button type="submit" class="logout-btn">🚪 Logout</button>
+            <button type="submit" class="logout-btn">Logout</button>
         </form>
     </aside>
 

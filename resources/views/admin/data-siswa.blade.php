@@ -191,6 +191,9 @@
            class="{{ request()->routeIs('admin.pengumuman.*') ? 'active' : '' }}">
             Pengumuman
         </a>
+        <a href="{{ route('admin.pengajuan.index') }}">
+            Pengajuan Beasiswa
+        </a>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
