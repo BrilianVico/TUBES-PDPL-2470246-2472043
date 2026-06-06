@@ -6,14 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Factories\TagihanFactory;
 use App\Models\Tagihan;
-use App\Decorators\TagihanDasar;
-use App\Decorators\BeasiswaDecorator;
+use App\Abstracts\BeasiswaPersen;
+use App\Abstracts\BeasiswaNominal;
 
 class TagihanController extends Controller
 {
-    /**
-     * Menampilkan daftar tagihan
-     */
     public function index()
     {
         $tagihan = DB::table('tagihan as t')
@@ -29,9 +26,6 @@ class TagihanController extends Controller
         return view('admin.tagihan.index', compact('tagihan'));
     }
 
-    /**
-     * Menampilkan form tambah tagihan
-     */
     public function create()
     {
         $siswa = DB::table('siswa')
@@ -42,83 +36,134 @@ class TagihanController extends Controller
         return view('admin.tagihan.create', compact('siswa'));
     }
 
-    /**
-     * Menyimpan tagihan baru
-     * Menggunakan Factory Pattern + Decorator Pattern
-     */
     public function store(Request $request)
     {
-        $request->validate([
-            'id_siswa'      => 'required',
-            'jenis_tagihan' => 'required',
-            'bulan'         => 'required',
-            'tahun'         => 'required',
-            'tahun_ajaran'  => 'required',
-        ]);
+        if ($request->mode_generate == 'satu') {
 
-        /*
-        |--------------------------------------------------------------------------
-        | Factory Pattern
-        |--------------------------------------------------------------------------
-        | Membuat data tagihan otomatis berdasarkan jenis tagihan.
-        |--------------------------------------------------------------------------
-        */
-        $data = TagihanFactory::create(
-            $request->jenis_tagihan,
-            $request->id_siswa
-        );
+            $request->validate([
+                'id_siswa'      => 'required',
+                'jenis_tagihan' => 'required',
+                'bulan'         => 'required',
+                'tahun'         => 'required',
+                'tahun_ajaran'  => 'required',
+            ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Decorator Pattern
-        |--------------------------------------------------------------------------
-        | Jika siswa mendapatkan beasiswa, nominal dikurangi otomatis.
-        |--------------------------------------------------------------------------
-        */
-        $tagihan = new TagihanDasar($data['nominal']);
+            $data = TagihanFactory::create(
+                $request->jenis_tagihan,
+                $request->id_siswa
+            );
 
-        if ($request->beasiswa == 1) {
-            $tagihan = new BeasiswaDecorator($tagihan);
-            $data['potongan_beasiswa'] = 100000;
-        } else {
             $data['potongan_beasiswa'] = 0;
+
+            $beasiswaAktif = DB::table('beasiswa_siswa as bs')
+                ->join('beasiswa as b', 'bs.id_beasiswa', '=', 'b.id_beasiswa')
+                ->where('bs.id_siswa', $request->id_siswa)
+                ->where('bs.status', 'AKTIF')
+                ->where('b.status', 'AKTIF')
+                ->first();
+
+            if ($beasiswaAktif) {
+
+                if (
+                    strtoupper($beasiswaAktif->berlaku_untuk) == 'SEMUA'
+                    ||
+                    strtoupper($beasiswaAktif->berlaku_untuk) == strtoupper($request->jenis_tagihan)
+                ) {
+
+                    if ($beasiswaAktif->jenis_potongan == 'PERSEN') {
+                        $beasiswa = new BeasiswaPersen(
+                            $beasiswaAktif->nilai_potongan
+                        );
+                    } else {
+                        $beasiswa = new BeasiswaNominal(
+                            $beasiswaAktif->nilai_potongan
+                        );
+                    }
+
+                    $potongan = $beasiswa->hitungPotongan(
+                        $data['nominal']
+                    );
+
+                    $data['potongan_beasiswa'] = $potongan;
+                }
+            }
+
+            $data['bulan'] = $request->bulan;
+            $data['tahun'] = $request->tahun;
+            $data['tahun_ajaran'] = $request->tahun_ajaran;
+            $data['status'] = 'BELUM';
+
+            Tagihan::create($data);
+
+        } else {
+
+            $request->validate([
+                'jenis_tagihan' => 'required',
+                'bulan'         => 'required',
+                'tahun'         => 'required',
+                'tahun_ajaran'  => 'required',
+            ]);
+
+            $siswaAktif = DB::table('siswa')
+                ->where('status_siswa', 'Aktif')
+                ->get();
+
+            foreach ($siswaAktif as $siswa) {
+
+                $data = TagihanFactory::create(
+                    $request->jenis_tagihan,
+                    $siswa->id_siswa
+                );
+
+                $data['potongan_beasiswa'] = 0;
+
+                $beasiswaAktif = DB::table('beasiswa_siswa as bs')
+                    ->join('beasiswa as b', 'bs.id_beasiswa', '=', 'b.id_beasiswa')
+                    ->where('bs.id_siswa', $siswa->id_siswa)
+                    ->where('bs.status', 'AKTIF')
+                    ->where('b.status', 'AKTIF')
+                    ->first();
+
+                if ($beasiswaAktif) {
+
+                    if (
+                        strtoupper($beasiswaAktif->berlaku_untuk) == 'SEMUA'
+                        ||
+                        strtoupper($beasiswaAktif->berlaku_untuk) == strtoupper($request->jenis_tagihan)
+                    ) {
+
+                        if ($beasiswaAktif->jenis_potongan == 'PERSEN') {
+                            $beasiswa = new BeasiswaPersen(
+                                $beasiswaAktif->nilai_potongan
+                            );
+                        } else {
+                            $beasiswa = new BeasiswaNominal(
+                                $beasiswaAktif->nilai_potongan
+                            );
+                        }
+
+                        $potongan = $beasiswa->hitungPotongan(
+                            $data['nominal']
+                        );
+
+                        $data['potongan_beasiswa'] = $potongan;
+                    }
+                }
+
+                $data['bulan'] = $request->bulan;
+                $data['tahun'] = $request->tahun;
+                $data['tahun_ajaran'] = $request->tahun_ajaran;
+                $data['status'] = 'BELUM';
+
+                Tagihan::create($data);
+            }
         }
-
-        // Nominal akhir setelah decorator
-        $data['nominal'] = $tagihan->getNominal();
-
-        // Tambahan field dari form
-        $data['bulan'] = $request->bulan;
-        $data['tahun'] = $request->tahun;
-        $data['tahun_ajaran'] = $request->tahun_ajaran;
-        $data['status'] = 'Belum Lunas';
-
-        // Simpan ke database
-        Tagihan::create($data);
 
         return redirect()
             ->route('admin.tagihan.index')
             ->with('success', 'Tagihan berhasil dibuat.');
     }
 
-    /**
-     * Menampilkan form edit tagihan
-     */
-    public function edit($id)
-    {
-        $tagihan = Tagihan::findOrFail($id);
-
-        $siswa = DB::table('siswa')
-            ->where('status_siswa', 'Aktif')
-            ->orderBy('nama', 'asc')
-            ->get();
-
-        return view('admin.tagihan.edit', compact('tagihan', 'siswa'));
-    }
-
-    /**
-     * Update tagihan
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -134,14 +179,14 @@ class TagihanController extends Controller
         $tagihan = Tagihan::findOrFail($id);
 
         $tagihan->update([
-            'id_siswa'           => $request->id_siswa,
-            'jenis_tagihan'      => $request->jenis_tagihan,
-            'nominal'            => $request->nominal,
-            'bulan'              => $request->bulan,
-            'tahun'              => $request->tahun,
-            'tahun_ajaran'       => $request->tahun_ajaran,
-            'status'             => $request->status,
-            'potongan_beasiswa'  => $request->potongan_beasiswa ?? 0,
+            'id_siswa'          => $request->id_siswa,
+            'jenis_tagihan'     => $request->jenis_tagihan,
+            'nominal'           => $request->nominal,
+            'bulan'             => $request->bulan,
+            'tahun'             => $request->tahun,
+            'tahun_ajaran'      => $request->tahun_ajaran,
+            'status'            => $request->status,
+            'potongan_beasiswa' => $request->potongan_beasiswa ?? 0,
         ]);
 
         return redirect()
@@ -149,9 +194,6 @@ class TagihanController extends Controller
             ->with('success', 'Tagihan berhasil diperbarui.');
     }
 
-    /**
-     * Hapus tagihan
-     */
     public function destroy($id)
     {
         $tagihan = Tagihan::findOrFail($id);

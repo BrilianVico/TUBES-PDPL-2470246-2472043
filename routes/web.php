@@ -173,6 +173,12 @@
         Route::post('/ortu/tagihan/{id}/bayar', [OrtuTagihanController::class, 'submitPembayaran'])
             ->name('ortu.tagihan.submit');
 
+        // ==========================================
+        // TAMBAHKAN ROUTE RIWAYAT PEMBAYARAN DI SINI
+        // ==========================================
+        Route::get('/ortu/riwayat', [OrtuTagihanController::class, 'riwayat'])
+            ->name('ortu.riwayat.index');
+
         // Pengajuan Beasiswa
         Route::get('/ortu/beasiswa', [OrtuBeasiswaController::class, 'create'])
             ->name('ortu.beasiswa.create');

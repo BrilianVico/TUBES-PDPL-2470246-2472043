@@ -27,7 +27,7 @@
             left: 0;
             width: 260px;
             height: 100vh;
-            background: linear-gradient(180deg, #0f172a, #1e293b);
+            background: linear-gradient(180deg, #176d4c, #0f5132);
             color: white;
             padding: 30px 20px;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
@@ -46,13 +46,14 @@
             display: block;
             width: 100%;
             text-align: left;
-            color: #cbd5e1;
+            color: rgba(255,255,255,.85);
             text-decoration: none;
             padding: 14px 18px;
-            border-radius: 12px;
+            border-radius: 14px;
             margin-bottom: 10px;
-            transition: 0.3s;
+            transition: .3s;
             font-size: 15px;
+            font-weight: 500;
             background: transparent;
             border: none;
             cursor: pointer;
@@ -61,8 +62,8 @@
         .menu a:hover,
         .menu a.active,
         .menu button:hover {
-            background: rgba(255,255,255,0.12);
-            color: #ffffff;
+            background: rgba(255,255,255,.15);
+            color: white;
         }
 
         /* ===================== CONTENT ===================== */
@@ -131,8 +132,8 @@
         }
 
         .badge-kelas {
-            background: #dbeafe;
-            color: #1d4ed8;
+            background: #dcfce7;
+            color: #166534;
             padding: 5px 12px;
             border-radius: 999px;
             font-size: 12px;
@@ -162,7 +163,18 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <h2>SMP Sunodia</h2>
+    <div style="text-align:center;margin-bottom:35px;">
+        <img src="{{ asset('IMG/ImageLogo.png') }}"
+             style="width:70px;margin-bottom:10px;">
+
+        <h2 style="margin:0;font-size:22px;">
+            Sunodia
+        </h2>
+
+        <p style="font-size:12px;opacity:.8;margin-top:5px;">
+            Portal Admin
+        </p>
+    </div>
 
     <div class="menu">
         <a href="{{ route('dashboard') }}"

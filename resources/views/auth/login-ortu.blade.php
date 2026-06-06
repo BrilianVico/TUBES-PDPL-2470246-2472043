@@ -312,7 +312,7 @@
                         class="toggle-password"
                         onclick="togglePassword()"
                     >
-                        👁
+
                     </button>
                 </div>
             </div>

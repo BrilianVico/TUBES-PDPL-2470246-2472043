@@ -10,7 +10,7 @@ class Tagihan extends Model
 
     protected $primaryKey = 'id_tagihan';
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     protected $fillable = [
         'id_siswa',
@@ -24,25 +24,16 @@ class Tagihan extends Model
         'potongan_beasiswa'
     ];
 
-    /**
-     * Relasi ke siswa
-     */
     public function siswa()
     {
         return $this->belongsTo(Siswa::class, 'id_siswa', 'id_siswa');
     }
 
-    /**
-     * Relasi ke pembayaran
-     */
     public function pembayaran()
     {
         return $this->hasMany(Pembayaran::class, 'id_tagihan', 'id_tagihan');
     }
 
-    /**
-     * Nominal akhir setelah potongan beasiswa
-     */
     public function getNominalAkhirAttribute()
     {
         return max(

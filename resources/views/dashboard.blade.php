@@ -26,7 +26,7 @@
             left: 0;
             width: 260px;
             height: 100vh;
-            background: linear-gradient(180deg, #0f172a, #1e293b);
+            background: linear-gradient(180deg, #176d4c, #0f5132);
             color: white;
             padding: 30px 20px;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
@@ -129,11 +129,11 @@
         /* Welcome Box */
         .welcome-box {
             margin-top: 30px;
-            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            background: linear-gradient(135deg, #176d4c, #0f5132);
             color: white;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.25);
+            box-shadow: 0 15px 35px rgba(23, 109, 76, 0.25);
         }
 
         .welcome-box h2 {
@@ -155,7 +155,18 @@
 
 {{-- Sidebar --}}
 <div class="sidebar">
-    <h2>SMP Sunodia</h2>
+    <div style="text-align:center;margin-bottom:35px;">
+        <img src="{{ asset('IMG/ImageLogo.png') }}"
+             style="width:70px;margin-bottom:10px;">
+
+        <h2 style="margin:0;font-size:22px;">
+            Sunodia
+        </h2>
+
+        <p style="font-size:12px;opacity:.8;margin-top:5px;">
+            Portal Admin
+        </p>
+    </div>
 
     <div class="menu">
         <a href="{{ route('dashboard') }}"
@@ -219,14 +230,7 @@
 <div class="content">
 
     {{-- Topbar --}}
-    <div class="topbar">
-        <h1>Dashboard Admin</h1>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="logout-btn">Logout</button>
-        </form>
-    </div>
 
     {{-- Statistik --}}
     <div class="cards">

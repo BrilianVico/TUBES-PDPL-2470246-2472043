@@ -17,7 +17,12 @@ class Beasiswa extends Model
         'deskripsi',
         'persentase_potongan',
         'status',
-        'kuota'
+        'kuota',
+
+        // ABSTRACT PATTERN
+        'jenis_potongan',
+        'nilai_potongan',
+        'berlaku_untuk'
     ];
 
     public $timestamps = false;

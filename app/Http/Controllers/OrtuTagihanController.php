@@ -26,7 +26,7 @@ class OrtuTagihanController extends Controller
             ->orderBy('t.id_tagihan', 'desc')
             ->get();
 
-        return view('ortu.tagihan.index', compact('tagihan'));
+        return view('ortu.tagihan', compact('tagihan'));
     }
 
     /**
@@ -48,7 +48,7 @@ class OrtuTagihanController extends Controller
             abort(404);
         }
 
-        return view('ortu.tagihan.bayar', compact('tagihan'));
+        return view('ortu.bayar-tagihan', compact('tagihan'));
     }
 
     /**
@@ -57,33 +57,76 @@ class OrtuTagihanController extends Controller
     public function submitPembayaran(Request $request, $id)
     {
         $request->validate([
-            'tanggal_bayar'  => 'required|date',
+            'tanggal_bayar' => 'required|date',
             'bukti_transfer' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'catatan'        => 'nullable|string',
+            'catatan' => 'nullable|string',
         ]);
 
         $file = $request->file('bukti_transfer');
+
         $filename = time() . '.' . $file->getClientOriginalExtension();
-        $file->storeAs('public/bukti-transfer', $filename);
+
+        $file->storeAs(
+            'bukti-transfer',
+            $filename,
+            'public'
+        );
 
         $tagihan = DB::table('tagihan')
             ->where('id_tagihan', $id)
             ->first();
 
         DB::table('pembayaran')->insert([
-            'id_tagihan'     => $id,
-            'id_walimurid'   => session('id_walimurid'),
-            'nominal_bayar'  => $tagihan->nominal,
-            'status_bayar'   => 'BELUM',
-            'tanggal_bayar'  => $request->tanggal_bayar,
+            'id_tagihan' => $id,
+            'id_walimurid' => session('id_walimurid'),
+            'nominal_bayar' => $tagihan->nominal,
+            'status_bayar' => 'BELUM',
+            'tanggal_bayar' => $request->tanggal_bayar,
             'bukti_transfer' => $filename,
-            'catatan'        => $request->catatan,
-            'created_at'     => now(),
-            'updated_at'     => now(),
+            'catatan' => $request->catatan,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
+
+        DB::table('tagihan')
+            ->where('id_tagihan', $id)
+            ->update([
+                'status' => 'PROSES'
+            ]);
 
         return redirect()
             ->route('ortu.tagihan.index')
-            ->with('success', 'Bukti transfer berhasil dikirim. Menunggu verifikasi admin.');
+            ->with(
+                'success',
+                'Bukti transfer berhasil dikirim. Menunggu verifikasi admin.'
+            );
+    }
+
+    /**
+     * Riwayat pembayaran orang tua
+     */
+
+    public function riwayat()
+    {
+        $idWali = session('id_walimurid');
+
+        $riwayat = DB::table('pembayaran as p')
+            ->join('tagihan as t', 'p.id_tagihan', '=', 't.id_tagihan')
+            ->join('siswa as s', 't.id_siswa', '=', 's.id_siswa')
+            ->where('p.id_walimurid', $idWali)
+            ->select(
+                'p.*',
+                't.jenis_tagihan',
+                't.bulan',
+                't.tahun',
+                's.nama as nama_siswa',
+                's.nis'
+            )
+            ->orderBy('p.id_pembayaran', 'desc')
+            ->get();
+
+        return view('ortu.riwayat', compact('riwayat'));
     }
 }
+
+

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ubah Password | Sunodia Academy</title>
+    <title>Riwayat Pembayaran | Sunodia Academy</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -75,7 +75,7 @@
             margin: 0;
         }
 
-        /* Menu polos seperti dashboard */
+        /* Menu */
         .menu a {
             display: block;
             color: rgba(255,255,255,0.85);
@@ -105,21 +105,18 @@
             cursor: pointer;
         }
 
-        /* Main */
+        /* Main Content */
         .main {
             flex: 1;
             margin-left: 280px;
             min-height: 100vh;
             padding: 40px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .content-wrapper {
             width: 100%;
-            max-width: 760px;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
         .topbar {
@@ -138,55 +135,68 @@
         }
 
         /* Card */
-        .form-card {
+        .table-card {
             background: var(--card);
             border-radius: var(--radius);
-            padding: 40px;
+            padding: 35px;
             width: 100%;
             box-shadow: var(--shadow);
         }
 
-        .form-label {
+        /* Custom Table Styling */
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
             font-weight: 600;
             color: var(--primary);
-            margin-bottom: 8px;
+            border-bottom: 2px solid #f1f5f9;
+            padding: 16px 12px;
         }
 
-        .form-control {
-            border-radius: 12px;
-            padding: 12px 14px;
-            border: 1px solid #d1d5db;
+        .table td {
+            padding: 16px 12px;
+            vertical-align: middle;
+            color: #334155;
         }
 
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 0.15rem rgba(23, 109, 76, 0.15);
+        /* Custom Badges */
+        .badge-success {
+            background-color: rgba(22, 163, 74, 0.1);
+            color: #16a34a;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-block;
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 10px;
+        .badge-warning {
+            background-color: rgba(217, 119, 6, 0.1);
+            color: #d97706;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-block;
         }
 
-        .btn-save {
-            background: var(--primary);
-            color: white;
+        .btn-detail {
+            background-color: #f1f5f9;
+            color: var(--text);
             border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+            text-decoration: none;
         }
 
-        .btn-save:hover {
-            background: var(--primary-dark);
-            color: white;
-        }
-
-        .btn-back {
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
+        .btn-detail:hover {
+            background-color: #e2e8f0;
+            color: var(--text);
         }
 
         @media (max-width: 992px) {
@@ -197,15 +207,10 @@
             .main {
                 margin-left: 0;
                 padding: 20px;
-                align-items: flex-start;
             }
 
-            .form-card {
-                padding: 25px;
-            }
-
-            .action-buttons {
-                flex-direction: column;
+            .table-card {
+                padding: 20px;
             }
         }
     </style>
@@ -244,6 +249,7 @@
                 Ubah Password
             </a>
         </nav>
+
         <form method="POST" action="{{ route('logout.ortu') }}">
             @csrf
             <button type="submit" class="logout-btn">
@@ -256,66 +262,29 @@
     <main class="main">
         <div class="content-wrapper">
             <div class="topbar">
-                <h1>Ubah Password</h1>
-                <p>Pastikan password lama Anda benar sebelum mengganti password.</p>
+                <h1>Riwayat Pembayaran</h1>
+                <p>Berikut adalah catatan transaksi pembayaran sekolah yang telah Anda lakukan.</p>
             </div>
 
-            <div class="form-card">
+            <div class="table-card">
 
-                @if(session('success'))
-                    <div class="alert alert-success rounded-4 border-0 shadow-sm mb-4">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if($errors->any())
-                    <div class="alert alert-danger rounded-4 border-0 shadow-sm mb-4">
-                        <ul class="mb-0 ps-3">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form action="{{ route('ortu.change-password.process') }}" method="POST">
-                    @csrf
-
-                    <div class="mb-3">
-                        <label class="form-label">Password Saat Ini</label>
-                        <input type="password"
-                               name="password_lama"
-                               class="form-control"
-                               required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Password Baru</label>
-                        <input type="password"
-                               name="password_baru"
-                               class="form-control"
-                               required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">Konfirmasi Password Baru</label>
-                        <input type="password"
-                               name="konfirmasi"
-                               class="form-control"
-                               required>
-                    </div>
-
-                    <div class="action-buttons">
-                        <a href="{{ route('dashboard.ortu') }}"
-                           class="btn btn-secondary btn-back">
-                            Kembali
-                        </a>
-
-                        <button type="submit" class="btn btn-save">
-                            Simpan Perubahan
-                        </button>
-                    </div>
-                </form>
+                {{-- Responsif Table Container --}}
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                        <tr>
+                            <th style="width: 80px;">No</th>
+                            <th>Tanggal</th>
+                            <th>Nama Siswa</th>
+                            <th>Jenis Pembayaran</th>
+                            <th>Total Bayar</th>
+                            <th>Status</th>
+                            <th class="text-center" style="width: 120px;">Aksi</th>
+                        </tr>
+                        </thead>
+                        <tbody> @forelse($riwayat as $key => $item) <tr> <td>{{ $key + 1 }}</td> <td> {{ \Carbon\Carbon::parse($item->tanggal_bayar)->format('d M Y') }} </td> <td> {{ $item->nama_siswa }} </td> <td> {{ $item->jenis_tagihan }} <br> <small class="text-muted"> {{ $item->bulan }} {{ $item->tahun }} </small> </td> <td> Rp {{ number_format($item->nominal_bayar,0,',','.') }} </td> <td> @if($item->status_bayar == 'LUNAS') <span class="badge-success"> Lunas </span> @elseif($item->status_bayar == 'DITOLAK') <span class="badge bg-danger"> Ditolak </span> @else <span class="badge-warning"> Menunggu Verifikasi </span> @endif </td> <td> @if($item->bukti_transfer) <a href="{{ asset('storage/bukti-transfer/'.$item->bukti_transfer) }}" target="_blank" class="btn-detail" > Lihat Bukti </a> @else - @endif </td> </tr> @empty <tr> <td colspan="7" class="text-center"> Belum ada riwayat pembayaran. </td> </tr> @endforelse </tbody>
+                    </table>
+                </div>
 
             </div>
         </div>
