@@ -40,13 +40,18 @@ class PengumumanController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi Ketat Sesuai Logika Sistem
         $request->validate([
             'judul'            => 'required|string|max:255',
             'isi'              => 'required|string',
             'tanggal_mulai'    => 'required|date',
-            'tanggal_selesai'  => 'nullable|date|after_or_equal:tanggal_mulai',
             'target'           => 'required|string|max:100',
+            'kelas_target'     => 'required_if:target,Kelas Tertentu',
+            'id_siswa_target'  => 'required_if:target,Siswa Tertentu',
             'status'           => 'required|in:Aktif,Draft,Nonaktif',
+        ], [
+            'kelas_target.required_if'       => 'Kelas wajib dipilih jika target pengumuman untuk Kelas Tertentu.',
+            'id_siswa_target.required_if'    => 'Siswa wajib dipilih jika target pengumuman untuk Siswa Tertentu.'
         ]);
 
         // Jika target kelas tertentu, simpan nama kelas sebagai target
@@ -67,11 +72,14 @@ class PengumumanController extends Controller
             }
         }
 
+        $tanggal_mulai = \Carbon\Carbon::parse($request->tanggal_mulai);
+        $tanggal_selesai = $tanggal_mulai->copy()->addMonth();
+
         Pengumuman::create([
             'judul'           => $request->judul,
             'isi'             => $request->isi,
-            'tanggal_mulai'   => $request->tanggal_mulai,
-            'tanggal_selesai' => $request->tanggal_selesai,
+            'tanggal_mulai'   => $tanggal_mulai,
+            'tanggal_selesai' => $tanggal_selesai,
             'target'          => $target,
             'status'          => $request->status,
         ]);
@@ -111,13 +119,18 @@ class PengumumanController extends Controller
     {
         $pengumuman = Pengumuman::findOrFail($id);
 
+        // Validasi Ketat Sesuai Logika Sistem
         $request->validate([
             'judul'            => 'required|string|max:255',
             'isi'              => 'required|string',
             'tanggal_mulai'    => 'required|date',
-            'tanggal_selesai'  => 'nullable|date|after_or_equal:tanggal_mulai',
             'target'           => 'required|string|max:100',
+            'kelas_target'     => 'required_if:target,Kelas Tertentu',
+            'id_siswa_target'  => 'required_if:target,Siswa Tertentu',
             'status'           => 'required|in:Aktif,Draft,Nonaktif',
+        ], [
+            'kelas_target.required_if'       => 'Kelas wajib dipilih jika target pengumuman untuk Kelas Tertentu.',
+            'id_siswa_target.required_if'    => 'Siswa wajib dipilih jika target pengumuman untuk Siswa Tertentu.'
         ]);
 
         $target = $request->target;
@@ -136,11 +149,14 @@ class PengumumanController extends Controller
             }
         }
 
+        $tanggal_mulai = \Carbon\Carbon::parse($request->tanggal_mulai);
+        $tanggal_selesai = $tanggal_mulai->copy()->addMonth();
+
         $pengumuman->update([
             'judul'           => $request->judul,
             'isi'             => $request->isi,
-            'tanggal_mulai'   => $request->tanggal_mulai,
-            'tanggal_selesai' => $request->tanggal_selesai,
+            'tanggal_mulai'   => $tanggal_mulai,
+            'tanggal_selesai' => $tanggal_selesai,
             'target'          => $target,
             'status'          => $request->status,
         ]);

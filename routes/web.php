@@ -19,17 +19,16 @@
     |--------------------------------------------------------------------------
     */
 
+    // Halaman utama langsung menampilkan menu pilih login
     Route::get('/', function () {
-        return view('auth.landing');
+        return view('auth.pilih-login');
     })->name('home');
 
+    // Jika ada yang mengakses /login-menu, lempar otomatis ke halaman utama (/)
     Route::get('/login-menu', function () {
-        return view('auth.pilih-login');
+        return redirect()->route('home');
     })->name('login.menu');
 
-    Route::get('/register-sekolah', function () {
-        return view('auth.register-sekolah');
-    })->name('register.sekolah');
 
     /*
     |--------------------------------------------------------------------------
@@ -153,6 +152,18 @@
         // Dashboard Orang Tua
         Route::get('/dashboard-ortu', [DashboardOrtuController::class, 'index'])
             ->name('dashboard.ortu');
+
+        // Route Pengumuman Live
+        Route::get('/ortu/announcements/live', [DashboardOrtuController::class, 'getLiveAnnouncements'])
+            ->name('ortu.announcements.live');
+
+        // Route Notifikasi Live
+        Route::get('/ortu/notifications/count', [DashboardOrtuController::class, 'getNotificationCounts'])
+            ->name('ortu.notifications.count');
+
+        // Route Tandai Pengumuman Dibaca
+        Route::post('/ortu/pengumuman/{id}/read', [DashboardOrtuController::class, 'markAsRead'])
+            ->name('ortu.pengumuman.read');
 
         // Ubah Password
         Route::get('/ortu/ubah-password', [OrtuAuthController::class, 'showChangePassword'])

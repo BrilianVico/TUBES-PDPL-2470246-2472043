@@ -1,10 +1,13 @@
-{{-- resources/views/dashboard.blade.php --}}
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - SMP Sunodia</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         * {
@@ -13,244 +16,282 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #3C507D;
+            --primary-dark: #112250;
+            --primary-light: #5a6e9c;
+            --bg: #F5F0E9;
+            --card: #ffffff;
+            --text: #112250;
+            --muted: #5a6e9c;
+            --accent: #E0C58F;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --shadow-sm: 0 4px 6px rgba(17, 34, 80, 0.03);
+            --shadow-md: 0 10px 25px rgba(17, 34, 80, 0.05);
+            --shadow-lg: 0 20px 40px rgba(17, 34, 80, 0.08);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+        }
+
         body {
-            font-family: "Segoe UI", sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 260px;
-            height: 100vh;
-            background: linear-gradient(180deg, #176d4c, #0f5132);
-            color: white;
-            padding: 30px 20px;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .menu a {
-            display: block;
-            color: #cbd5e1;
-            text-decoration: none;
-            padding: 14px 18px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            transition: 0.3s;
-            font-size: 15px;
-        }
-
-        .menu a:hover,
-        .menu a.active {
-            background: rgba(255, 255, 255, 0.12);
-            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
         }
 
         /* Main Content */
         .content {
-            margin-left: 260px;
+            margin-left: 280px;
             padding: 40px;
+            min-height: 100vh;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        /* Topbar */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Topbar Header */
         .topbar {
-            background: white;
-            padding: 20px 30px;
-            border-radius: 18px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            padding: 24px 35px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--shadow-md);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
         .topbar h1 {
             font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 50px;
+            border: 1px solid rgba(17, 34, 80, 0.08);
+        }
+
+        .admin-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 700;
         }
 
-        .logout-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .logout-btn:hover {
-            background: #dc2626;
-        }
-
-        /* Cards */
+        /* Cards Grid */
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 25px;
+            margin-bottom: 35px;
         }
 
         .card {
-            background: white;
-            border-radius: 18px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-            transition: 0.3s;
+            background: var(--card);
+            border-radius: var(--radius-md);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(224, 181, 143, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 150px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px 0 0 4px;
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(224, 181, 143, 0.5);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
 
         .card h3 {
-            font-size: 15px;
-            color: #6b7280;
-            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(60, 80, 125, 0.08);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .card:hover .card-icon {
+            background: var(--primary-dark);
+            color: var(--accent);
+            transform: rotate(8deg);
         }
 
         .card .value {
-            font-size: 34px;
-            font-weight: bold;
-            color: #111827;
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-top: 15px;
         }
 
         /* Welcome Box */
         .welcome-box {
-            margin-top: 30px;
-            background: linear-gradient(135deg, #176d4c, #0f5132);
+            background: linear-gradient(135deg, #112250, #08122d);
             color: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(23, 109, 76, 0.25);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(224, 181, 143, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .welcome-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(224, 181, 143, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
         }
 
         .welcome-box h2 {
-            margin-bottom: 10px;
-            font-size: 28px;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--accent);
         }
 
         .welcome-box p {
-            line-height: 1.7;
-            opacity: 0.95;
+            line-height: 1.8;
+            opacity: 0.85;
+            font-size: 15px;
+            max-width: 700px;
         }
 
-        form {
-            display: inline;
+        /* Premium Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
     </style>
 </head>
 <body>
 
 {{-- Sidebar --}}
-<div class="sidebar">
-    <div style="text-align:center;margin-bottom:35px;">
-        <img src="{{ asset('IMG/ImageLogo.png') }}"
-             style="width:70px;margin-bottom:10px;">
-
-        <h2 style="margin:0;font-size:22px;">
-            Sunodia
-        </h2>
-
-        <p style="font-size:12px;opacity:.8;margin-top:5px;">
-            Portal Admin
-        </p>
-    </div>
-
-    <div class="menu">
-        <a href="{{ route('dashboard') }}"
-           class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            Dashboard
-        </a>
-
-        <a href="{{ route('admin.data-siswa') }}"
-           class="{{ request()->routeIs('admin.data-siswa') ? 'active' : '' }}">
-            Data Siswa
-        </a>
-
-        <a href="{{ route('admin.tagihan.index') }}"
-           class="{{ request()->routeIs('admin.tagihan.*') ? 'active' : '' }}">
-            Tagihan
-        </a>
-
-        <a href="{{ route('admin.pembayaran.index') }}"
-           class="{{ request()->routeIs('admin.pembayaran.*') ? 'active' : '' }}">
-            Pembayaran
-        </a>
-
-        <a href="{{ route('admin.beasiswa.index') }}"
-           class="{{ request()->routeIs('admin.beasiswa.*') ? 'active' : '' }}">
-            Beasiswa
-        </a>
-
-        <a href="{{ route('admin.pengumuman.index') }}"
-           class="{{ request()->routeIs('admin.pengumuman.*') ? 'active' : '' }}">
-            Pengumuman
-        </a>
-
-        <a href="{{ route('admin.pengajuan.index') }}">
-            Pengajuan Beasiswa
-        </a>
-
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit"
-                    style="
-                        width: 100%;
-                        background: transparent;
-                        border: none;
-                        color: #fca5a5;
-                        text-align: left;
-                        padding: 14px 18px;
-                        border-radius: 12px;
-                        cursor: pointer;
-                        font-size: 15px;
-                        transition: 0.3s;
-                    "
-                    onmouseover="this.style.background='rgba(255,255,255,0.12)'"
-                    onmouseout="this.style.background='transparent'">
-                Logout
-            </button>
-        </form>
-    </div>
-</div>
+@include('layouts.admin_sidebar')
 
 {{-- Main Content --}}
 <div class="content">
 
     {{-- Topbar --}}
-
+    <div class="topbar">
+        <div>
+            <h1>Dashboard Administrasi</h1>
+            <p>{{ now()->translatedFormat('l, d F Y') }}</p>
+        </div>
+        <div class="admin-profile">
+            <div class="admin-avatar">A</div>
+            <div style="font-size: 13px; font-weight: 600;">Administrator</div>
+        </div>
+    </div>
 
     {{-- Statistik --}}
     <div class="cards">
-        <div class="card">
-            <h3>Total Siswa</h3>
+        <div class="card" style="border-left: none;">
+            <div class="card-header">
+                <h3>Total Siswa</h3>
+                <div class="card-icon"><i class="fas fa-users"></i></div>
+            </div>
             <div class="value">{{ $totalSiswa }}</div>
         </div>
 
-        <div class="card">
-            <h3>Total Tagihan</h3>
+        <div class="card" style="border-left: none;">
+            <div class="card-header">
+                <h3>Total Tagihan</h3>
+                <div class="card-icon"><i class="fas fa-receipt"></i></div>
+            </div>
             <div class="value">{{ $totalTagihan }}</div>
         </div>
 
-        <div class="card">
-            <h3>Pembayaran Hari Ini</h3>
+        <div class="card" style="border-left: none;">
+            <div class="card-header">
+                <h3>Pembayaran Baru</h3>
+                <div class="card-icon"><i class="fas fa-wallet"></i></div>
+            </div>
             <div class="value">{{ $pembayaranHariIni }}</div>
         </div>
 
-        <div class="card">
-            <h3>Pengajuan Beasiswa</h3>
+        <div class="card" style="border-left: none;">
+            <div class="card-header">
+                <h3>Pengajuan Beasiswa</h3>
+                <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+            </div>
             <div class="value">{{ $pengajuanBeasiswa }}</div>
         </div>
     </div>
@@ -260,7 +301,7 @@
         <h2>Selamat Datang di Sistem Administrasi Sekolah</h2>
         <p>
             Gunakan dashboard ini untuk mengelola data siswa, tagihan,
-            pembayaran, beasiswa, dan pengumuman SMP Sunodia.
+            pembayaran, beasiswa, dan pengumuman SMP Sunodia secara efisien. Pantau seluruh alur keuangan sekolah dan data pengajuan beasiswa siswa secara terpusat.
         </p>
     </div>
 
@@ -268,3 +309,4 @@
 
 </body>
 </html>
+

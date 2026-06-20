@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Progres Tugas Besar - Minggu 5</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #112250;
+            background: #ffffff;
+            margin: 40px auto;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        h1 {
+            color: #112250;
+            border-bottom: 3px solid #E0C58F;
+            padding-bottom: 10px;
+            font-size: 28px;
+        }
+        h2 {
+            color: #3C507D;
+            border-bottom: 1px solid #D9CBC2;
+            padding-bottom: 6px;
+            margin-top: 30px;
+            font-size: 20px;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #D9CBC2;
+            margin: 30px 0;
+        }
+        code {
+            background: #F5F0E9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+        }
+        pre {
+            background: #F5F0E9;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid #D9CBC2;
+        }
+        pre code {
+            padding: 0;
+            background: transparent;
+        }
+        a {
+            color: #3C507D;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        a:hover {
+            color: #112250;
+            text-decoration: underline;
+        }
+        ul, ol {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        @media print {
+            body {
+                margin: 20px;
+                max-width: 100%;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print" style="background: #F5F0E9; border: 1px solid #E0C58F; padding: 15px; border-radius: 8px; margin-bottom: 30px; color: #112250;">
+        <strong>Petunjuk Cetak PDF:</strong> Tekan <code>Ctrl + P</code> (atau klik kanan -> Cetak/Print) di browser Anda, lalu pilih opsi <strong>"Save as PDF"</strong> atau <strong>"Simpan sebagai PDF"</strong> untuk mendapatkan file PDF laporan yang rapi dan terformat dengan baik.
+    </div>
+
+    <h1>LAPORAN PROGRES TUGAS BESAR - MINGGU 5 (100% IMPLEMENTASI)</h1>
+    <p><strong>Mata Kuliah:</strong> Pembelajaran & Desain Perangkat Lunak (PDPL)<br>
+    <strong>Anggota Tim:</strong> Brilian & Vico<br>
+    <strong>Repositori GitHub:</strong> <a href="https://github.com/BrilianVico/TUBES-PDPL-2470246-2472043" target="_blank">BrilianVico/TUBES-PDPL-2470246-2472043</a><br>
+    <strong>Branch Minggu Ini:</strong> <a href="https://github.com/BrilianVico/TUBES-PDPL-2470246-2472043/tree/MINGGU-5---BrilianVico" target="_blank">MINGGU-5---BrilianVico</a></p>
+
+    <hr>
+
+    <h2>I. RINGKASAN PROGRESS & IMPLEMENTASI (100%)</h2>
+    <p>Pada minggu ini, tim telah mencapai <strong>100% implementasi fungsionalitas dan pembaruan UI/UX</strong> untuk sistem administrasi sekolah SMP Sunodia. Rincian pekerjaan meliputi:</p>
+    <ul>
+        <li><strong>Refactoring UI/UX dengan Premium Color Palette:</strong>
+            <ul>
+                <li>Mengganti warna dasar hijau lama menjadi palet mewah/premium: Sapphire (<code>#3C507D</code>), Royal Blue (<code>#112250</code>), Quicksand (<code>#E0C58F</code>), Swan Wing (<code>#F5F0E9</code>), dan Shellstone (<code>#D9CBC2</code>).</li>
+                <li>Menerapkan desain kartu (cards) dengan bayangan halus, radius membulat, dan garis aksen emas Quicksand di sebelah kiri judul.</li>
+            </ul>
+        </li>
+        <li><strong>Perbaikan Dashboard Admin (Penyajian Data & Perbaikan Bug):</strong>
+            <ul>
+                <li>Menambahkan tabel responsif untuk menampilkan data seluruh siswa, seluruh tagihan, seluruh riwayat pembayaran, dan pengajuan beasiswa di dashboard admin.</li>
+                <li>Mengatasi error 500 pada pembacaan kolom <code>tanggal_pengajuan</code> dengan menggantinya secara dinamis ke kolom <code>rata_rata</code> nilai siswa.</li>
+                <li>Mengatur susunan tabel menjadi grid 2x2 dengan kotak tinggi terbatas (<code>max-height: 300px; overflow-y: auto</code>) dan sticky headers demi kenyamanan navigasi.</li>
+            </ul>
+        </li>
+        <li><strong>Penyelarasan Warna Tombol Aksi:</strong>
+            <ul>
+                <li>Menyelaraskan seluruh tombol aksi, termasuk tombol "Lihat Bukti", tombol submit, edit, hapus, dan kembali agar konsisten dengan palet warna utama.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>II. KONTRIBUSI AI (ARTIFICIAL INTELLIGENCE)</h2>
+    <ul>
+        <li><strong>AI yang digunakan:</strong> Antigravity (Google DeepMind)</li>
+        <li><strong>Kontribusi AI:</strong>
+            <ul>
+                <li>Melakukan analisis struktur view Blade Laravel secara keseluruhan.</li>
+                <li>Melakukan penggantian kode warna CSS secara rekursif di seluruh file template view.</li>
+                <li>Mengimplementasikan micro-interactions, transisi hover, animasi entry fade-in pada halaman, dan kustomisasi scrollbar modern.</li>
+                <li>Membantu penyusunan query SQL (Eloquent DB) untuk DashboardController dan perbaikan bug kode program.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>III. REFERENSI KODE & LISENSI</h2>
+    <p>Sebagian besar implementasi dikembangkan secara mandiri. Untuk manajemen format referensi kode yang digunakan, kami merujuk pada pedoman sitasi perangkat lunak menggunakan <strong>CodeCite</strong>:</p>
+    <ul>
+        <li>Dokumen rujukan CodeCite: <a href="https://github.com/kvinown/code-cite" target="_blank">code-cite GitHub</a></li>
+        <li>Dependensi pihak ketiga yang digunakan dalam projek ini meliputi Laravel Framework, Tailwind CSS, Bootstrap CSS, dan Alpine.js.</li>
+    </ul>
+
+    <h2>IV. PANDUAN PEMAKAIAN DAN CARA AKSES (BAGI PUBLIK)</h2>
+
+    <h3>1. Prasyarat Sistem (Prerequisites)</h3>
+    <p>Sebelum menjalankan aplikasi, pastikan komputer Anda telah terinstal:</p>
+    <ul>
+        <li>PHP >= 8.1</li>
+        <li>Composer</li>
+        <li>Node.js & NPM</li>
+        <li>MySQL / MariaDB</li>
+    </ul>
+
+    <h3>2. Langkah-langkah Instalasi Lokal (Clone & Setup)</h3>
+    <ol>
+        <li><strong>Clone Repositori & Masuk ke Branch:</strong>
+            <pre><code>git clone https://github.com/BrilianVico/TUBES-PDPL-2470246-2472043.git
+cd TUBES-PDPL-2470246-2472043
+git checkout MINGGU-5---BrilianVico</code></pre>
+        </li>
+        <li><strong>Install Dependensi PHP & Node.js:</strong>
+            <pre><code>composer install
+npm install</code></pre>
+        </li>
+        <li><strong>Konfigurasi Environment:</strong>
+            <p>Salin file <code>.env.example</code> menjadi <code>.env</code> dan sesuaikan konfigurasi database Anda.</p>
+            <pre><code>cp .env.example .env</code></pre>
+        </li>
+        <li><strong>Generate App Key & Jalankan Migrasi Database:</strong>
+            <pre><code>php artisan key:generate
+php artisan migrate --seed</code></pre>
+        </li>
+        <li><strong>Jalankan Build Assets:</strong>
+            <pre><code>npm run build</code></pre>
+        </li>
+        <li><strong>Jalankan Server Lokal:</strong>
+            <pre><code>php artisan serve</code></pre>
+            <p>Aplikasi dapat diakses di browser melalui tautan <a href="http://127.0.0.1:8000" target="_blank">http://127.0.0.1:8000</a>.</p>
+        </li>
+    </ol>
+
+    <h3>3. Akun Akses Demo</h3>
+    <ul>
+        <li><strong>Portal Admin:</strong>
+            <ul>
+                <li>URL Login: <code>http://127.0.0.1:8000/login/admin</code> (atau pilih akses admin di halaman landing)</li>
+                <li>Kredensial Default dapat dilihat pada database seeder/dokumentasi internal.</li>
+            </ul>
+        </li>
+        <li><strong>Portal Orang Tua (Wali Murid):</strong>
+            <ul>
+                <li>URL Login: <code>http://127.0.0.1:8000/login/ortu</code></li>
+            </ul>
+        </li>
+    </ul>
+
+</body>
+</html>

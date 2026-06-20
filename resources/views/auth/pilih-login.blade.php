@@ -17,6 +17,20 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #3C507D; /* Sapphire */
+            --primary-dark: #112250; /* Royal Blue */
+            --primary-light: #5a6e9c;
+            --bg: #F5F0E9; /* Swan Wing */
+            --card: #ffffff;
+            --text: #112250; /* Royal Blue text */
+            --muted: #5a6e9c;
+            --accent: #E0C58F; /* Quicksand */
+            --accent-dark: #d9cbc2; /* Shellstone */
+            --shadow: 0 20px 40px rgba(17, 34, 80, 0.08);
+            --radius: 24px;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
@@ -25,20 +39,22 @@
             align-items: center;
             padding: 30px;
             background: url('{{ asset('IMG/GambarSekolah.png') }}') center center / cover no-repeat fixed;
-            color: #ffffff;
+            color: var(--text);
             position: relative;
+            overflow-x: hidden;
         }
 
+        /* Overlay premium agar background selaras dengan tema dark-blue & warm blend */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(circle at top right, rgba(59, 130, 246, 0.18), transparent 35%),
-                radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.12), transparent 35%),
-                rgba(2, 6, 23, 0.72);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+                radial-gradient(circle at top right, rgba(60, 80, 125, 0.3), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(17, 34, 80, 0.4), transparent 40%),
+                rgba(8, 18, 45, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: -1;
         }
 
@@ -51,160 +67,199 @@
 
         .logo-top img {
             width: 90px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,.25));
         }
 
         .wrapper {
             width: 100%;
             max-width: 720px;
+            text-align: center;
         }
 
         .card {
-            padding: 32px 40px;
-            border-radius: 28px;
-            background: rgba(15, 23, 42, 0.78);
-            border: 1px solid rgba(255,255,255,0.08);
-            box-shadow:
-                0 30px 80px rgba(0,0,0,0.45),
-                inset 0 1px 0 rgba(255,255,255,0.05);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            text-align: center;
+            background: rgba(255, 255, 255, 0.95) !important;
+            border-radius: var(--radius);
+            padding: 45px 35px;
+            box-shadow: 0 30px 60px rgba(8, 18, 45, 0.25) !important;
+            border: 1px solid rgba(224, 181, 143, 0.3) !important;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent) !important;
+            box-shadow: 0 35px 70px rgba(8, 18, 45, 0.35) !important;
         }
 
         .badge {
             display: inline-block;
-            padding: 8px 18px;
-            border-radius: 999px;
-            background: rgba(16,185,129,0.12);
-            border: 1px solid rgba(16,185,129,0.35);
-            color: #a7f3d0;
-            font-size: 0.82rem;
+            padding: 6px 16px;
+            border-radius: 30px;
+            background: rgba(60, 80, 125, 0.08);
+            border: 1px solid rgba(60, 80, 125, 0.15);
+            color: var(--primary);
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
 
         h1 {
-            font-size: 2.8rem;
+            font-size: 2.4rem;
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 16px;
-            background: linear-gradient(90deg, #ffffff, #bfdbfe);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .description {
-            max-width: 650px;
+            max-width: 600px;
             margin: 0 auto 36px;
-            line-height: 1.9;
-            font-size: 1rem;
-            color: rgba(255,255,255,0.82);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            color: var(--muted);
         }
 
         .role-box {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 24px;
-            padding: 30px;
-            margin-bottom: 30px;
+            background: var(--bg);
+            border: 1px solid rgba(60, 80, 125, 0.1);
+            border-radius: 20px;
+            padding: 26px;
+            margin-bottom: 15px;
         }
 
         .role-box h3 {
-            font-size: 1.6rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            text-align: left;
+            padding-left: 4px;
         }
 
         .roles {
             display: flex;
             justify-content: center;
-            gap: 24px;
+            gap: 20px;
             flex-wrap: wrap;
         }
 
         .role {
-            width: 220px;
-            padding: 30px 20px;
-            border-radius: 22px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(111, 255, 210, 0.25);
+            flex: 1;
+            min-width: 240px;
+            padding: 30px 22px;
+            border-radius: 16px;
+            background: #ffffff;
+            border: 1px solid rgba(60, 80, 125, 0.12);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(17, 34, 80, 0.02);
         }
 
         .role:hover {
-            transform: translateY(-6px) scale(1.03);
-            border-color: #6fffd2;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.25);
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 15px 30px rgba(17, 34, 80, 0.1);
+        }
+
+        .role:hover .role-title {
+            color: var(--primary);
         }
 
         .icon {
-            font-size: 3rem;
+            font-size: 2.6rem;
             margin-bottom: 14px;
+            display: block;
         }
 
         .role-title {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+            transition: color 0.3s ease;
         }
 
         .role-desc {
-            font-size: 0.9rem;
-            line-height: 1.7;
-            color: rgba(255,255,255,0.72);
-        }
-
-        .back-button a {
-            display: inline-block;
-            padding: 12px 26px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .back-button a:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-2px);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--muted);
         }
 
         .footer {
-            margin-top: 28px;
-            font-size: 0.82rem;
+            margin-top: 35px;
+            font-size: 0.8rem;
             line-height: 1.8;
-            color: rgba(255,255,255,0.65);
+            color: var(--muted);
+            border-top: 1px solid rgba(60, 80, 125, 0.1);
+            padding-top: 20px;
         }
 
         .footer a {
-            color: #6fffd2;
+            color: var(--primary);
             text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+            color: var(--primary-dark);
+        }
+
+        /* Modern Page Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Premium Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5F0E9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
         }
 
         @media (max-width: 768px) {
             body {
-                padding: 20px;
+                padding: 16px;
             }
 
             .card {
-                padding: 35px 24px;
-                border-radius: 24px;
+                padding: 30px 20px;
             }
 
             h1 {
-                font-size: 2rem;
-            }
-
-            .description {
-                font-size: 0.95rem;
+                font-size: 1.85rem;
             }
 
             .role {
                 width: 100%;
+                flex: none;
+            }
+
+            .logo-top {
+                position: absolute;
+                top: 16px;
+                right: 16px;
             }
 
             .logo-top img {
@@ -221,7 +276,6 @@
 
 <div class="wrapper">
     <div class="card">
-
         <div class="badge">Pilih Jenis Akses</div>
 
         <h1>Masuk ke Sistem</h1>
@@ -236,7 +290,7 @@
 
             <div class="roles">
                 <div class="role" onclick="window.location.href='{{ route('login.ortu') }}'">
-                    <div class="icon">👪</div>
+                    <span class="icon">👪</span>
                     <div class="role-title">Orang Tua</div>
                     <div class="role-desc">
                         Melihat tagihan, status pembayaran, dan informasi administrasi siswa.
@@ -244,26 +298,21 @@
                 </div>
 
                 <div class="role" onclick="window.location.href='{{ route('login') }}'">
-                    <div class="icon">🔒</div>
+                    <span class="icon">🔒</span>
                     <div class="role-title">Admin</div>
                     <div class="role-desc">
-                        Mengelola data siswa, tagihan, pembayaran, dan laporan.
+                        Mengelola data siswa, tagihan, pembayaran, dan laporan keuangan.
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="back-button">
-            <a href="{{ route('home') }}">← Kembali ke Halaman Utama</a>
-        </div>
-
         <div class="footer">
             © {{ date('Y') }} Sistem Pembayaran Sekolah SMP Sunodia<br>
-            Bantuan & Kontak:
+            Bantuan & Kontak IT Support:<br>
             <a href="mailto:2472046@maranatha.ac.id">2472046@maranatha.ac.id</a> |
             <a href="mailto:2472043@maranatha.ac.id">2472043@maranatha.ac.id</a>
         </div>
-
     </div>
 </div>
 

@@ -22,7 +22,14 @@ class Beasiswa extends Model
         // ABSTRACT PATTERN
         'jenis_potongan',
         'nilai_potongan',
-        'berlaku_untuk'
+        'berlaku_untuk',
+
+        // TAMBAHKAN KOLOM PERIODE DI BAWAH INI AGAR TIDAK DI-BLOK OLEH LARAVEL:
+        'bulan_buka',
+        'tahun_buka',
+        'bulan_tutup',
+        'tahun_tutup',
+        'durasi_potongan',
     ];
 
     public $timestamps = false;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembayaran;
+use App\Models\Tagihan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -56,16 +57,20 @@ class PembayaranController extends Controller
     /**
      * Tolak pembayaran
      */
-    public function reject($id)
+    public function reject($id_pembayaran)
     {
-        $pembayaran = Pembayaran::findOrFail($id);
+        $pembayaran = Pembayaran::findOrFail($id_pembayaran);
 
-        $pembayaran->update([
-            'status_bayar' => 'BELUM'
-        ]);
+        // 1. Ubah status jadi 'DITOLAK'
+        $pembayaran->status_bayar = 'DITOLAK';
+        $pembayaran->save();
 
-        return redirect()
-            ->route('admin.pembayaran.index')
-            ->with('success', 'Pembayaran ditolak.');
+        // 2. Penting: Ubah status tagihannya menjadi 'DITOLAK'
+        // agar muncul kembali di dashboard orang tua dengan status ditolak
+        $tagihan = Tagihan::findOrFail($pembayaran->id_tagihan);
+        $tagihan->status = 'DITOLAK';
+        $tagihan->save();
+
+        return redirect()->back()->with('success', 'Pembayaran ditolak, tagihan kembali aktif.');
     }
 }

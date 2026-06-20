@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+{{-- resources/views/auth/login_ortu.blade.php --}}
+    <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +17,18 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #3C507D; /* Sapphire */
+            --primary-dark: #112250; /* Royal Blue */
+            --bg: #F5F0E9; /* Swan Wing */
+            --card: #ffffff;
+            --text: #112250;
+            --muted: #5a6e9c;
+            --accent: #E0C58F; /* Quicksand */
+            --shadow: 0 20px 40px rgba(17, 34, 80, 0.08);
+            --radius: 24px;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
@@ -24,7 +37,7 @@
             align-items: center;
             padding: 30px;
             background: url('{{ asset('IMG/GambarSekolah.png') }}') center center / cover no-repeat fixed;
-            color: #ffffff;
+            color: var(--text);
             position: relative;
         }
 
@@ -33,11 +46,11 @@
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(circle at top right, rgba(16, 185, 129, 0.18), transparent 35%),
-                radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.12), transparent 35%),
-                rgba(2, 6, 23, 0.72);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+                radial-gradient(circle at top right, rgba(16, 185, 129, 0.2), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(60, 80, 125, 0.35), transparent 40%),
+                rgba(8, 18, 45, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: -1;
         }
 
@@ -50,200 +63,234 @@
 
         .logo-top img {
             width: 90px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,.25));
         }
 
         .wrapper {
             width: 100%;
-            max-width: 520px;
+            max-width: 480px;
         }
 
         .card {
-            padding: 38px 40px;
-            border-radius: 30px;
-            background: rgba(15, 23, 42, 0.78);
-            border: 1px solid rgba(255,255,255,0.08);
-            box-shadow:
-                0 30px 80px rgba(0,0,0,0.45),
-                inset 0 1px 0 rgba(255,255,255,0.05);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            background: rgba(255, 255, 255, 0.95) !important;
+            border-radius: var(--radius);
+            padding: 40px 35px;
+            box-shadow: 0 30px 60px rgba(8, 18, 45, 0.25) !important;
+            border: 1px solid rgba(224, 181, 143, 0.3) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent) !important;
         }
 
         .badge {
             display: inline-block;
-            padding: 8px 18px;
-            border-radius: 999px;
-            background: rgba(16, 185, 129, 0.12);
-            border: 1px solid rgba(16, 185, 129, 0.35);
-            color: #a7f3d0;
+            padding: 6px 16px;
+            border-radius: 30px;
+            background: rgba(60, 80, 125, 0.08);
+            border: 1px solid rgba(60, 80, 125, 0.15);
+            color: var(--primary);
             font-size: 0.8rem;
             font-weight: 600;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #ffffff, #d1fae5);
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .description {
-            font-size: 0.95rem;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.78);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: var(--muted);
             margin-bottom: 28px;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
+            text-align: left;
         }
 
         .form-label {
             display: block;
             margin-bottom: 8px;
             font-size: 0.9rem;
-            font-weight: 500;
-            color: rgba(255,255,255,0.9);
+            font-weight: 600;
+            color: var(--primary-dark);
         }
 
         .form-control {
             width: 100%;
-            padding: 14px 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.10);
-            background: rgba(255,255,255,0.06);
-            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            border: 1.5px solid rgba(60, 80, 125, 0.2) !important;
+            border-radius: 12px !important;
+            padding: 12px 16px !important;
+            background-color: #ffffff !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            color: var(--primary-dark) !important;
             font-size: 0.95rem;
             outline: none;
-            transition: 0.3s;
-        }
-
-        .form-control::placeholder {
-            color: rgba(255,255,255,0.45);
         }
 
         .form-control:focus {
-            border-color: #34d399;
-            box-shadow: 0 0 0 3px rgba(52,211,153,0.15);
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 4px rgba(224, 181, 143, 0.25) !important;
         }
 
         .toggle-password {
             position: absolute;
             top: 50%;
-            right: 14px;
+            right: 16px;
             transform: translateY(-50%);
             background: transparent;
             border: none;
-            color: rgba(255,255,255,0.65);
-            font-size: 18px;
+            color: var(--muted);
+            font-size: 1.2rem;
             cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .remember {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 22px;
+            margin-bottom: 24px;
             font-size: 0.88rem;
-            color: rgba(255,255,255,0.75);
+            color: var(--muted);
+            cursor: pointer;
         }
 
         .remember input {
-            accent-color: #10b981;
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
         }
 
         .btn-login {
             width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #3C507D, #112250) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(224, 181, 143, 0.3) !important;
+            font-weight: 600 !important;
+            border-radius: 12px !important;
+            padding: 14px !important;
+            box-shadow: 0 4px 15px rgba(17, 34, 80, 0.15) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            cursor: pointer !important;
             font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 12px 24px rgba(16,185,129,0.25);
         }
 
         .btn-login:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.05);
+            background: linear-gradient(135deg, #112250, #08122d) !important;
+            transform: translateY(-2px) scale(1.01) !important;
+            box-shadow: 0 6px 20px rgba(17, 34, 80, 0.25) !important;
+            color: var(--accent) !important;
         }
 
         .quick-links {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-top: 18px;
+            margin-top: 20px;
         }
 
+        /* Quick links adjustments to match premium system guidelines */
         .quick-link {
             display: block;
             text-align: center;
             padding: 12px 14px;
             border-radius: 12px;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             font-weight: 600;
-            color: #e2e8f0;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255,255,255,0.08);
-            transition: 0.3s;
+            background: var(--bg) !important;
+            color: var(--primary) !important;
+            border: 1px solid rgba(60, 80, 125, 0.15) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .quick-link:hover {
-            background: rgba(16, 185, 129, 0.12);
-            border-color: rgba(16, 185, 129, 0.35);
-            color: #a7f3d0;
-            transform: translateY(-1px);
+            background: var(--accent) !important;
+            color: var(--primary-dark) !important;
+            border-color: var(--accent) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(224, 181, 143, 0.2) !important;
         }
 
         .error-box {
             margin-bottom: 20px;
             padding: 12px 14px;
             border-radius: 12px;
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.35);
-            color: #fecaca;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #ef4444;
             font-size: 0.85rem;
+            text-align: left;
         }
 
         .back-button {
-            margin-top: 22px;
+            margin-top: 24px;
             text-align: center;
         }
 
         .back-button a {
-            color: rgba(255,255,255,0.75);
+            display: inline-block;
+            padding: 8px 20px;
+            background: transparent !important;
+            color: var(--muted) !important;
             text-decoration: none;
             font-size: 0.88rem;
             font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .back-button a:hover {
-            color: #ffffff;
+            color: var(--primary-dark) !important;
+            text-decoration: underline;
         }
 
         .footer {
-            margin-top: 24px;
+            margin-top: 30px;
             text-align: center;
-            font-size: 0.78rem;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.55);
+            font-size: 0.8rem;
+            color: var(--muted);
+            border-top: 1px solid rgba(60, 80, 125, 0.1);
+            padding-top: 20px;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 480px) {
             .quick-links {
                 grid-template-columns: 1fr;
             }
-
             .card {
-                padding: 30px 24px;
+                padding: 30px 20px;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
@@ -267,13 +314,13 @@
 
         @if(session('error'))
             <div class="error-box">
-                {{ session('error') }}
+                ⚠️ {{ session('error') }}
             </div>
         @endif
 
         @if($errors->any())
             <div class="error-box">
-                {{ $errors->first() }}
+                ⚠️ {{ $errors->first() }}
             </div>
         @endif
 
@@ -311,6 +358,7 @@
                         type="button"
                         class="toggle-password"
                         onclick="togglePassword()"
+                        id="toggleIcon"
                     >
 
                     </button>
@@ -351,13 +399,14 @@
 <script>
     function togglePassword() {
         const passwordInput = document.getElementById('password');
-        const toggleButton = document.querySelector('.toggle-password');
+        const toggleIcon = document.getElementById('toggleIcon');
 
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
 
         } else {
             passwordInput.type = 'password';
+
         }
     }
 </script>
